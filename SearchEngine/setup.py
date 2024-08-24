@@ -1,5 +1,6 @@
 import json
 import os
+import yaml
 from kaggle.api.kaggle_api_extended import KaggleApi
 
 
@@ -47,8 +48,11 @@ def remove_files(output_path):
 
 def setup():
     dataset_url = "shuyangli94/food-com-recipes-and-user-interactions"
-    dataset_save_path = "dataset"
-    download_dataset(dataset_url, dataset_save_path)
+
+    with open('./SearchEngine/config.yaml', 'r') as file:
+        config_data = yaml.safe_load(file)
+
+    download_dataset(dataset_url, f"{config_data['DATA']['DATADIR']}")
 
 
 if __name__ == "__main__":

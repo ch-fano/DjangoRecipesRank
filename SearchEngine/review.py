@@ -6,7 +6,7 @@ import pickle
 
 class ReadReview:
     def __init__(self, dump_rating=False):
-        with open('config.yaml', 'r') as file:
+        with open('./SearchEngine/config.yaml', 'r') as file:
             config_data = yaml.safe_load(file)
 
         self.data_dir = f"{config_data['DATA']['DATADIR']}"

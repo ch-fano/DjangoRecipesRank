@@ -9,12 +9,12 @@ import pickle
 class Index:
     def __init__(self, force_build_index=False, limit=None):
         try:
-            with open('dataset/rating.pkl', 'rb') as f:
+            with open('./SearchEngine/dataset/rating.pkl', 'rb') as f:
                 self.rating_dict = pickle.load(f)
         except Exception:
             raise Exception('Execute review.py first')
 
-        with open('config.yaml', 'r') as file:
+        with open('./SearchEngine/config.yaml', 'r') as file:
             config_data = yaml.safe_load(file)
 
         self.index_dir = f"{config_data['INDEX']['MAINDIR']}"
