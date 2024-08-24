@@ -1,0 +1,6 @@
+INDEX:
+    MAINDIR: indexdir
+
+DATA:
+    DATADIR: dataset
+
