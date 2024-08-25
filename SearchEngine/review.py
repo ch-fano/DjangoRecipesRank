@@ -53,9 +53,12 @@ class ReadReview:
 
         for recipe_id, review_list in self.review_dict.items():
             for review in review_list:
-                rating_dict['recipe_id'] = rating_dict.get('recipe_id', 0) + int(review['rating'])
+                if recipe_id not in rating_dict:
+                    rating_dict[recipe_id] = 0
 
-            rating_dict['recipe_id'] /= len(review_list)
+                rating_dict[recipe_id] += int(review['rating'])
+
+            rating_dict[recipe_id] /= len(review_list)
 
         with open(os.path.join(self.data_dir, self.rating_file), 'wb') as file:
             pickle.dump(rating_dict, file)

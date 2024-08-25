@@ -8,10 +8,6 @@ class ExtractEmotions:
         self.model = AutoModelForSequenceClassification.from_pretrained(f"j-hartmann/emotion-english-distilroberta-base")
 
     def extract(self, document):
-        emotions = self.create_pipeline()
-        return emotions(document)
-
-    def create_pipeline(self):
         return pipeline(
             model=self.model,
             tokenizer=self.tokenizer,
@@ -19,7 +15,7 @@ class ExtractEmotions:
             top_k=7,
             max_length=512,
             truncation=True
-        )
+        )(document)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,6 @@
 INDEX:
     MAINDIR: ./SearchEngine/indexdir
+    SENTIMENT: ./SearchEngine/indexdir/sentimentIndex
 
 DATA:
     DATADIR: ./SearchEngine/dataset
-    SENTIMENT: ./SearchEngine/dataset/sentimentIndex
-

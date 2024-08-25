@@ -3,6 +3,11 @@ import os
 import yaml
 from kaggle.api.kaggle_api_extended import KaggleApi
 
+from SearchEngine.index import Index
+from SearchEngine.review import ReadReview
+from SearchEngine.clear_dataset import clear_dataset
+from SearchEngine.sentiment.reviews import ReviewsIndex
+
 
 def load_api_key(api_key_file):
     with open(api_key_file, 'r') as f:
@@ -46,7 +51,7 @@ def remove_files(output_path):
     print(f"Tutti i file superflui sono stati eliminati.")
 
 
-def setup():
+def create_db():
     dataset_url = "shuyangli94/food-com-recipes-and-user-interactions"
 
     with open('./SearchEngine/config.yaml', 'r') as file:
@@ -56,4 +61,9 @@ def setup():
 
 
 if __name__ == "__main__":
-    setup()
+    create_db()
+    ReadReview(dump_rating=True)
+    clear_dataset(min_num_review=7, max_num_review=70)  # delete the recipes with less than min_num_review and more than max_num_review
+    Index(force_build_index=True)
+    ReviewsIndex(force_build_index=True)
+

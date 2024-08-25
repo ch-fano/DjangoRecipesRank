@@ -57,27 +57,33 @@ class Index:
 
         with open(csv_file_path, 'r', encoding='utf-8') as csvfile:
             reader = list(csv.DictReader(csvfile))  # Converti il reader in una lista per ottenere il numero totale di righe
-            total_rows = len(reader)  # Numero totale di righe
+
+            progress_bar = tqdm(total=len(self.rating_dict) if not limit else limit, desc="Indexing Recipes")
 
             # Inizializza tqdm per mostrare la progress bar
-            for i, row in tqdm(enumerate(reader), total=total_rows if not limit else limit, desc="Indexing Recipes"):
-                writer.add_document(
-                    recipe_id=row['id'],
-                    recipe_name=row['name'],
-                    prep_time=int(row['minutes']),
-                    recipe_date=row['submitted'],
-                    n_steps=int(row['n_steps']),
-                    steps=row['steps'],
-                    description=row['description'],
-                    ingredients=row['ingredients'],
-                    n_ingredients=int(row['n_ingredients']),
-                    rating=self.rating_dict.get(row['id'], 0)
-                )
-                if limit and i >= limit:
-                    writer.commit()
-                    return ix
+            for i, row in enumerate(reader):
+                if str(row['id']) in self.rating_dict.keys():
+                    progress_bar.update(1)
+
+                    writer.add_document(
+                        recipe_id=row['id'],
+                        recipe_name=row['name'],
+                        prep_time=int(row['minutes']),
+                        recipe_date=row['submitted'],
+                        n_steps=int(row['n_steps']),
+                        steps=row['steps'],
+                        description=row['description'],
+                        ingredients=row['ingredients'],
+                        n_ingredients=int(row['n_ingredients']),
+                        rating=self.rating_dict.get(row['id'], 0)
+                    )
+                    if limit and i >= limit:
+                        writer.commit()
+                        progress_bar.close()
+                        return ix
 
         writer.commit()
+        progress_bar.close()
         return ix
 
 
