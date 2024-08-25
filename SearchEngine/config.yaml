@@ -3,4 +3,5 @@ INDEX:
 
 DATA:
     DATADIR: ./SearchEngine/dataset
+    SENTIMENT: ./SearchEngine/dataset/sentimentIndex
 

@@ -7,12 +7,13 @@ import json
 
 class ReviewsIndex:
     def __init__(self):
-        with open('./config.yaml', 'r') as file:
-            config_data = yaml.safe_load(file)
+        with open('./SearchEngine/config.yaml', 'r') as file:
+            self.config_data = yaml.safe_load(file)
 
-        path = f"./{config_data['DATA']['REVIEWS']}"
-        if (not os.path.exists(path)):
+        path = f"./{self.config_data['DATA']['SENTIMENT']}"
+        if not os.path.exists(path):
             self.setupReviewDB()
+
         with open(path, "rb") as fp:
             self.index = pickle.load(fp)
 
@@ -34,38 +35,25 @@ class ReviewsIndex:
 
         sentiment = ExtractEmotions()
 
-        with open('./config.yaml', 'r') as file:
-            config_data = yaml.safe_load(file)
+        with open('./SearchEngine/dataset/review.pkl', 'rb') as file:
+            review_dict = pickle.load(file)
 
-        dataDir = f"./{config_data['DATA']['DATADIR']}"
+        sentiment_dict = dict()
 
-        reviewsDict = {}
+        for recipe_id, list_reviews in review_dict.items():
+            sentiment_dict[recipe_id] = {s: 0 for s in SENTIMENTS}
 
-        for i, jsonFile in enumerate(os.listdir(dataDir)):
-            with open(u"{dir}/{file}".format(dir=dataDir, file=jsonFile), "r", encoding="utf-8") as f:
+            for review in list_reviews:
+                list_sentiment = sentiment.extract(review)[0]
+                for s in list_sentiment:
+                    sentiment_dict[recipe_id][s['label']] += s['score']
 
-                data = json.load(f)
-                nrReview = len(data["reviews"])
+            for s in SENTIMENTS:
+                sentiment_dict[recipe_id][s] /= len(list_reviews)
 
-                reviewsDict[data["id"]] = (dict(), nrReview)
-
-                for s in SENTIMENTS:
-                    reviewsDict[data["id"]][0][s] = 0
-
-                for review in data["reviews"]:
-                    try:
-                        #if not math.isnan(review["review"]):
-                        sentiments = sentiment.extract(review["review"])
-                    except Exception as e:
-                        print(data["id"])
-                        print(e)
-
-                    for sent in sentiments:
-                        for s in sent:
-                            reviewsDict[data["id"]][0][s["label"]] += (s["score"] / nrReview)
-
-        with open(f"./{config_data['DATA']['REVIEWS']}", mode='wb') as revF:
-            pickle.dump(reviewsDict, revF)
+        print(sentiment_dict)
+        with open(f"./{self.config_data['DATA']['SENTIMENT']}", mode='wb') as f:
+            pickle.dump(sentiment_dict, f)
 
         print("Review pickle file created successfully! ")
 
@@ -74,6 +62,4 @@ class ReviewsIndex:
 
 
 if __name__ == "__main__":
-    #setupReviewDB()
     rev = ReviewsIndex()
-    print(rev.index.get(10094145))
