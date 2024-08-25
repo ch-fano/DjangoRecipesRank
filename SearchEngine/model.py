@@ -1,4 +1,4 @@
-from index import Index
+from SearchEngine.index import Index
 from whoosh import qparser
 from whoosh.scoring import WeightingModel
 
@@ -26,7 +26,6 @@ class IRModel:
 
             parsedQ = qp.parse(query)
             if (verbose):
-                print(f'Input: {query}')
                 print(f'Parsed query: {parsedQ}')
             results = s.search(parsedQ, terms=True, limit=resLimit) if resLimit > 0 else s.search(parsedQ, terms=True)
             for i in results:
@@ -48,3 +47,15 @@ class IRModel:
             s.close()
         #return correctedString, resDict
         return resDict
+
+
+if __name__ == '__main__':
+    print('small debug-only CLI interface for query testing.')
+    my_index = Index()
+    model = IRModel(my_index)
+
+    while True:
+        query = input('Input your query: ')
+        resdict = model.search(query, verbose=True)
+        for row, (key, values) in enumerate(resdict.items()):
+            print(f'{row}: {key}: {values}')
