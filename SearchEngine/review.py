@@ -23,7 +23,7 @@ class ReadReview:
         if not os.path.exists(self.data_dir):
             raise Exception('Execute setup first')
 
-        print('Starting the dump review')
+        print('Starting reviews dump... ', end='')
 
         csv_file_path = os.path.join(self.data_dir, 'RAW_interactions.csv')
 
@@ -43,11 +43,11 @@ class ReadReview:
 
         with open(os.path.join(self.data_dir, self.review_file), 'wb') as file:
             pickle.dump(review_dict, file)
-
+        print('Done.')
         return review_dict
 
     def dump_ratings(self):
-        print('Starting the ratings evaluation')
+        print('Starting ratings evaluation... ', end='')
 
         rating_dict = dict()
 
@@ -59,6 +59,8 @@ class ReadReview:
 
         with open(os.path.join(self.data_dir, self.rating_file), 'wb') as file:
             pickle.dump(rating_dict, file)
+
+        print('Done.')
 
 
 if __name__ == '__main__':
