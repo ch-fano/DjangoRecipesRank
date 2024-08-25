@@ -4,6 +4,7 @@ from whoosh.index import create_in, open_dir
 from whoosh.fields import Schema, TEXT, NUMERIC, ID
 import csv
 import pickle
+from tqdm import tqdm  # Importa tqdm per la progress bar
 
 
 class Index:
@@ -25,7 +26,6 @@ class Index:
 
     @staticmethod
     def setup_schema():
-        # Definire lo schema per l'indice Whoosh
         schema = Schema(
             recipe_id=ID(stored=True, unique=False),
             recipe_name=TEXT(stored=True, field_boost=3.0, spelling=True),
@@ -41,7 +41,6 @@ class Index:
         return schema
 
     def setup_index(self, force_build_index, limit):
-
         if not os.path.exists(self.index_dir) or force_build_index:
             return self.create_index(limit)
         else:
@@ -51,19 +50,17 @@ class Index:
         if not os.path.exists(self.index_dir):
             os.mkdir(self.index_dir)
 
-        # Creare l'indice Whoosh
         ix = create_in(self.index_dir, self.schema)
-
-        # Aprire il writer
         writer = ix.writer()
 
-        # Percorso completo del file CSV
         csv_file_path = os.path.join(self.data_dir, 'RAW_recipes.csv')
 
-        # Leggere il file CSV e indicizzare i dati
         with open(csv_file_path, 'r', encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for i, row in enumerate(reader):
+            reader = list(csv.DictReader(csvfile))  # Converti il reader in una lista per ottenere il numero totale di righe
+            total_rows = len(reader)  # Numero totale di righe
+
+            # Inizializza tqdm per mostrare la progress bar
+            for i, row in tqdm(enumerate(reader), total=total_rows if not limit else limit, desc="Indexing Recipes"):
                 writer.add_document(
                     recipe_id=row['id'],
                     recipe_name=row['name'],
@@ -76,11 +73,10 @@ class Index:
                     n_ingredients=int(row['n_ingredients']),
                     rating=self.rating_dict.get(row['id'], 0)
                 )
-                if limit and i > limit:
+                if limit and i >= limit:
                     writer.commit()
                     return ix
 
-        # Completare la scrittura dell'indice
         writer.commit()
         return ix
 
