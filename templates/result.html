@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Search Results</h1>
+    
+    <div>
+        <h2>Search Criteria</h2>
+        <ul>
+            <li><strong>Words to retrieve:</strong> {{ text_search }}</li>
+            <li><strong>Minimum Number of Steps:</strong> {{ n_steps_min }}</li>
+            <li><strong>Maximum Number of Steps:</strong> {{ n_steps_max }}</li>
+            <li><strong>Recipe Date:</strong> {{ recipe_date_min }}</li>
+            <li><strong>Minimum Preparation Time (minutes):</strong> {{ prep_time_min }}</li>
+            <li><strong>Maximum Preparation Time (minutes):</strong> {{ prep_time_max }}</li>
+            <li><strong>Minimum Rating:</strong> {{ rating }}</li>
+            <li><strong>Minimum Number of Ingredients:</strong> {{ n_ingredients_min }}</li>
+            <li><strong>Maximum Number of Ingredients:</strong> {{ n_ingredients_max }}</li>
+        </ul>
+    </div>
+
+{% endblock %}

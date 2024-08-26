@@ -7,35 +7,35 @@
     <form class="search-box" method="post" action="{% url 'result' %}">
         {% csrf_token %}
         {{ form.text_search }}
-        
+
         <div class="filters">
             <div class="filter-item">
                 <label>Number of Steps</label>
                 <div id="n_steps_slider"></div>
-                <span id="n_steps_min_text">1</span> - 
+                <span id="n_steps_min_text">1</span> -
                 <span id="n_steps_max_text">50</span>
                 <input type="hidden" name="n_steps_min" id="n_steps_min" value="1">
                 <input type="hidden" name="n_steps_max" id="n_steps_max" value="50">
             </div>
-            
+
             <div class="filter-item">
                 <label>Preparation Time (minutes)</label>
                 <div id="prep_time_slider"></div>
-                <span id="prep_time_min_text">1</span> - 
+                <span id="prep_time_min_text">1</span> -
                 <span id="prep_time_max_text">10000</span>
                 <input type="hidden" name="prep_time_min" id="prep_time_min" value="1">
                 <input type="hidden" name="prep_time_max" id="prep_time_max" value="10000">
             </div>
-            
+
             <div class="filter-item">
                 <label>Number of Ingredients</label>
                 <div id="n_ingredients_slider"></div>
-                <span id="n_ingredients_min_text">1</span> - 
+                <span id="n_ingredients_min_text">1</span> -
                 <span id="n_ingredients_max_text">20</span>
                 <input type="hidden" name="n_ingredients_min" id="n_ingredients_min" value="1">
                 <input type="hidden" name="n_ingredients_max" id="n_ingredients_max" value="20">
             </div>
-        
+
             <label for="rating" class="rating-label">{{ form.rating.label }}</label>
             <div class="star-rating">
                 {% for i in "54321" %}
@@ -48,7 +48,7 @@
                     {% if form.instance.rating == 0 %} checked {% endif %}>
                 <label for="star0" style="display: none;">&#9733;</label>
             </div>
-            
+
             <div class="filter-item">
                 <label for="recipe_date_min">{{ form.recipe_date_min.label }}</label>
                 {{ form.recipe_date_min }}
@@ -117,7 +117,7 @@
         font-size: 14px;
     }
     .rating-label {
-        margin-bottom: 0; 
+        margin-bottom: 0;
     }
     .star-rating {
         display: flex;
