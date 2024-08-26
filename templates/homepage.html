@@ -15,6 +15,8 @@
         <div class="filter-item">
             <label>Number of Steps</label>
             <div id="n_steps_slider"></div>
+            <span id="n_steps_min_text">1</span> - 
+            <span id="n_steps_max_text">50</span>
             <input type="hidden" name="n_steps_min" id="n_steps_min" value="1">
             <input type="hidden" name="n_steps_max" id="n_steps_max" value="50">
         </div>
@@ -22,6 +24,8 @@
         <div class="filter-item">
             <label>Preparation Time (minutes)</label>
             <div id="prep_time_slider"></div>
+            <span id="prep_time_min_text">1</span> - 
+            <span id="prep_time_max_text">10000</span>
             <input type="hidden" name="prep_time_min" id="prep_time_min" value="1">
             <input type="hidden" name="prep_time_max" id="prep_time_max" value="10000">
         </div>
@@ -29,6 +33,8 @@
         <div class="filter-item">
             <label>Number of Ingredients</label>
             <div id="n_ingredients_slider"></div>
+            <span id="n_ingredients_min_text">1</span> - 
+            <span id="n_ingredients_max_text">20</span>
             <input type="hidden" name="n_ingredients_min" id="n_ingredients_min" value="1">
             <input type="hidden" name="n_ingredients_max" id="n_ingredients_max" value="20">
         </div>
@@ -93,11 +99,22 @@
         font-weight: bold;
         margin-bottom: 10px;
     }
+    .filter-item div {
+        display: inline-block;
+        width: 75%;
+    }
+    .filter-item span {
+        display: inline-block;
+        width: 10%;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+    }
 </style>
 
 <script>
     $(function() {
-        // Inizializzazione di jQuery UI Slider per i filtri
+        // Initialization of jQuery UI Slider for the filters
         $("#n_steps_slider").slider({
             range: true,
             min: 1,
@@ -106,10 +123,10 @@
             slide: function(event, ui) {
                 $("#n_steps_min").val(ui.values[0]);
                 $("#n_steps_max").val(ui.values[1]);
+                $("#n_steps_min_text").text(ui.values[0]);
+                $("#n_steps_max_text").text(ui.values[1]);
             }
         });
-        $("#n_steps_min").val($("#n_steps_slider").slider("values", 0));
-        $("#n_steps_max").val($("#n_steps_slider").slider("values", 1));
 
         $("#prep_time_slider").slider({
             range: true,
@@ -119,10 +136,10 @@
             slide: function(event, ui) {
                 $("#prep_time_min").val(ui.values[0]);
                 $("#prep_time_max").val(ui.values[1]);
+                $("#prep_time_min_text").text(ui.values[0]);
+                $("#prep_time_max_text").text(ui.values[1]);
             }
         });
-        $("#prep_time_min").val($("#prep_time_slider").slider("values", 0));
-        $("#prep_time_max").val($("#prep_time_slider").slider("values", 1));
 
         $("#n_ingredients_slider").slider({
             range: true,
@@ -132,10 +149,10 @@
             slide: function(event, ui) {
                 $("#n_ingredients_min").val(ui.values[0]);
                 $("#n_ingredients_max").val(ui.values[1]);
+                $("#n_ingredients_min_text").text(ui.values[0]);
+                $("#n_ingredients_max_text").text(ui.values[1]);
             }
         });
-        $("#n_ingredients_min").val($("#n_ingredients_slider").slider("values", 0));
-        $("#n_ingredients_max").val($("#n_ingredients_slider").slider("values", 1));
     });
 </script>
 {% endblock %}

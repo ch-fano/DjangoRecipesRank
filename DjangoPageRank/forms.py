@@ -40,7 +40,7 @@ class SearchForm(forms.Form):
     )
 
     rating = forms.FloatField(
-        label="Rating",
+        label="Minimum rating",
         required=False,
         widget=forms.NumberInput(attrs={'placeholder': 'Rating'})
     )

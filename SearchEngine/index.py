@@ -88,10 +88,10 @@ class Index:
 
 if __name__ == '__main__':
     with open('./SearchEngine/dataset/RAW_recipes.csv', 'r', encoding='utf-8') as csvfile:
-        reader = list(csv.DictReader(csvfile))
-        max=0
-        for i, row in enumerate(reader):
-            if int(row['minutes']) > max:
-                max = int(row['minutes'])
-        print('max prep time is {}'.format(max))
+        r = list(csv.DictReader(csvfile))
+        max_minutes=0
+        for i, row in enumerate(r):
+            if int(row['minutes']) > max_minutes:
+                max_minutes = int(row['minutes'])
+        print('max prep time is {}'.format(max_minutes))
     #my_index = Index(force_build_index=True, limit=10000)
