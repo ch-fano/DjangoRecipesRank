@@ -39,10 +39,10 @@ class SearchForm(forms.Form):
         widget=forms.NumberInput(attrs={'type': 'range', 'min': '1', 'max': '10000', 'value': '10000'})
     )
 
-    rating = forms.FloatField(
+    rating = forms.IntegerField(
         label="Minimum rating",
         required=False,
-        widget=forms.NumberInput(attrs={'placeholder': 'Rating'})
+        widget=forms.RadioSelect(choices=[(i, f"{i} ★") for i in range(0, 6)])
     )
 
     n_ingredients_min = forms.IntegerField(

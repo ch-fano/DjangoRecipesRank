@@ -38,11 +38,20 @@
             <input type="hidden" name="n_ingredients_min" id="n_ingredients_min" value="1">
             <input type="hidden" name="n_ingredients_max" id="n_ingredients_max" value="20">
         </div>
+    
+        <label for="rating" class="rating-label">{{ form.rating.label }}</label>
+        <div class="star-rating">
+            {% for i in "54321" %}
+                <input type="radio" name="stars" value="{{ i }}" id="star{{ i }}"
+                    {% if form.instance.rating|stringformat:"s" == i %} checked {% endif %}>
+                <label for="star{{ i }}">&#9733;</label>
+            {% endfor %}
 
-        <div class="filter-item">
-            <label for="rating">{{ form.rating.label }}</label>
-            <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" placeholder="0 - 5" value="{{ form.rating.value }}">
+            <input type="radio" name="stars" value="0" id="star0"
+                {% if form.instance.rating == 0 %} checked {% endif %}>
+            <label for="star0" style="display: none;">&#9733;</label>
         </div>
+        
         
         <div class="filter-item">
             <label for="recipe_date">{{ form.recipe_date.label }}</label>
@@ -94,7 +103,7 @@
     .filter-item {
         margin-bottom: 20px;
     }
-    .filter-item label {
+    .filter-item label, .rating-label{
         display: block;
         font-weight: bold;
         margin-bottom: 10px;
@@ -110,6 +119,30 @@
         font-weight: bold;
         font-size: 14px;
     }
+    .rating-label {
+        margin-bottom: 0; 
+    }
+    .star-rating {
+        display: flex;
+        justify-content: left;
+        flex-direction: row-reverse;
+    }
+    .star-rating input {
+        display: none;
+    }
+    .star-rating label {
+        font-size: 3rem;
+        color: #ddd;
+        cursor: pointer;
+        padding: 0 10px;
+    }
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #f39c12;
+    }
+
+
 </style>
 
 <script>
@@ -154,5 +187,23 @@
             }
         });
     });
+    
+    document.addEventListener('DOMContentLoaded', function () {
+            const star1Input = document.getElementById('star1');
+            const star0Input = document.getElementById('star0');
+            const star1Label = document.querySelector('label[for="star1"]');
+
+            star1Label.addEventListener('click', function (event) {
+                // If the first star is already selected
+                if (star1Input.checked) {
+                    // Prevent the default behavior of the label click
+                    event.preventDefault();
+                    // Deselect the first star by selecting the hidden 0-star input
+                    star0Input.checked = true;
+                    // Trigger change event to update form state
+                    star0Input.dispatchEvent(new Event('change'));
+                }
+            });
+        });
 </script>
 {% endblock %}
