@@ -1,6 +1,8 @@
 import pickle
 
 
+# TODO: Creare il file csv con il dataset già pulito in base alle recensioni
+
 def read_pickles():
     try:
         with open('./SearchEngine/dataset/rating.pkl', 'rb') as f:

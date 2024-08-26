@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
+
+from SearchEngine.Controller import Controller
+from SearchEngine.index import Index
+from SearchEngine.model import IRModel
 from .forms import SearchForm
 import pickle
 
@@ -22,19 +26,25 @@ def get_result(request):
     form = SearchForm(request.POST)
     if form.is_valid():
         cleaned_data = form.cleaned_data
+        ctx = {}
+        # ctx = {
+        #     'text_search': cleaned_data.get('text_search', ''),
+        #     'n_steps_min': cleaned_data.get('n_steps_min', ''),
+        #     'n_steps_max': cleaned_data.get('n_steps_max', ''),
+        #     'recipe_date_min': cleaned_data.get('recipe_date_min', ''),
+        #     'prep_time_min': cleaned_data.get('prep_time_min', ''),
+        #     'prep_time_max': cleaned_data.get('prep_time_max', ''),
+        #     'rating': cleaned_data.get('rating', ''),
+        #     'n_ingredients_min': cleaned_data.get('n_ingredients_min', ''),
+        #     'n_ingredients_max': cleaned_data.get('n_ingredients_max', ''),
+        # }
 
-        ctx = {
-            'text_search': cleaned_data.get('text_search', ''),
-            'n_steps_min': cleaned_data.get('n_steps_min', ''),
-            'n_steps_max': cleaned_data.get('n_steps_max', ''),
-            'recipe_date_min': cleaned_data.get('recipe_date_min', ''),
-            'prep_time_min': cleaned_data.get('prep_time_min', ''),
-            'prep_time_max': cleaned_data.get('prep_time_max', ''),
-            'rating': cleaned_data.get('rating', ''),
-            'n_ingredients_min': cleaned_data.get('n_ingredients_min', ''),
-            'n_ingredients_max': cleaned_data.get('n_ingredients_max', ''),
-        }
+        my_index = Index()
+        model = IRModel(my_index)
+        my_controller = Controller(my_index, model, cleaned_data)
+        ctx['recepies'] = my_controller.search()
 
+        #TODO: visualizzare i risutltati della ricerca utilizzando i dati sopra
         # Render the result template with the context
         return render(request, 'result.html', ctx)
 
