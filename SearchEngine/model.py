@@ -1,8 +1,6 @@
 from SearchEngine.index import Index
 from whoosh import qparser
 from whoosh.scoring import WeightingModel
-
-from functools import reduce
 from whoosh.scoring import BM25F
 
 

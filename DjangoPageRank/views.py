@@ -21,6 +21,7 @@ def get_home(request):
     form = SearchForm()
     return render(request, 'homepage.html', {'form': form})
 
+
 @require_POST
 def get_result(request):
     form = SearchForm(request.POST)
@@ -52,3 +53,5 @@ def get_result(request):
 
 def get_recipe(request):
     pass
+
+

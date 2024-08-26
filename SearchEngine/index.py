@@ -58,10 +58,12 @@ class Index:
         with open(csv_file_path, 'r', encoding='utf-8') as csvfile:
             reader = list(csv.DictReader(csvfile))  # Converti il reader in una lista per ottenere il numero totale di righe
 
+            i = 0
             progress_bar = tqdm(total=len(self.rating_dict) if not limit else limit, desc="Indexing Recipes")
             # Inizializza tqdm per mostrare la progress bar
-            for i, row in enumerate(reader):
+            for row in reader:
                 if str(row['id']) in self.rating_dict.keys():
+                    i+= 0
                     progress_bar.update(1)
 
                     writer.add_document(

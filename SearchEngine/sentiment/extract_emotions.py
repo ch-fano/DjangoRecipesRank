@@ -14,7 +14,8 @@ class ExtractEmotions:
             task="text-classification",
             top_k=7,
             max_length=512,
-            truncation=True
+            truncation=True,
+            device=0
         )(document)
 
 

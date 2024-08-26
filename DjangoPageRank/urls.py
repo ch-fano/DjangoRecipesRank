@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', get_home, name='home'),
     path('result/', get_result, name='result'),
-    #path('recipe/<int:pk>', get_recipe, name='view'),
+    #path('recipe/<int:pk>/', get_recipe, name='view'),
 ]
