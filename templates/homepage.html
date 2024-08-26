@@ -36,16 +36,15 @@
                 <input type="hidden" name="n_ingredients_max" id="n_ingredients_max" value="20">
             </div>
 
-            <label for="rating" class="rating-label">{{ form.rating.label }}</label>
+            <label class="rating-label">{{ form.rating.label }}</label>
             <div class="star-rating">
                 {% for i in "54321" %}
-                    <input type="radio" name="stars" value="{{ i }}" id="star{{ i }}"
-                        {% if form.instance.rating|stringformat:"s" == i %} checked {% endif %}>
+                    <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}"
+                        {% if form.rating.value|stringformat:"s" == i %} checked {% endif %}>
                     <label for="star{{ i }}">&#9733;</label>
                 {% endfor %}
-
-                <input type="radio" name="stars" value="0" id="star0"
-                    {% if form.instance.rating == 0 %} checked {% endif %}>
+                <input type="radio" name="rating" value="0" id="star0"
+                    {% if form.rating.value|stringformat:"s" == "0" %} checked {% endif %}>
                 <label for="star0" style="display: none;">&#9733;</label>
             </div>
 
