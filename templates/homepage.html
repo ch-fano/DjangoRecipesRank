@@ -4,61 +4,58 @@
 
 {% block content %}
 <div class="search-container">
-    <form class="search-box" method="GET" action="{% url 'result' %}">
+    <form class="search-box" method="post" action="{% url 'result' %}">
+        {% csrf_token %}
         {{ form.text_search }}
+        
+        <div class="filters">
+            <div class="filter-item">
+                <label>Number of Steps</label>
+                <div id="n_steps_slider"></div>
+                <span id="n_steps_min_text">1</span> - 
+                <span id="n_steps_max_text">50</span>
+                <input type="hidden" name="n_steps_min" id="n_steps_min" value="1">
+                <input type="hidden" name="n_steps_max" id="n_steps_max" value="50">
+            </div>
+            
+            <div class="filter-item">
+                <label>Preparation Time (minutes)</label>
+                <div id="prep_time_slider"></div>
+                <span id="prep_time_min_text">1</span> - 
+                <span id="prep_time_max_text">10000</span>
+                <input type="hidden" name="prep_time_min" id="prep_time_min" value="1">
+                <input type="hidden" name="prep_time_max" id="prep_time_max" value="10000">
+            </div>
+            
+            <div class="filter-item">
+                <label>Number of Ingredients</label>
+                <div id="n_ingredients_slider"></div>
+                <span id="n_ingredients_min_text">1</span> - 
+                <span id="n_ingredients_max_text">20</span>
+                <input type="hidden" name="n_ingredients_min" id="n_ingredients_min" value="1">
+                <input type="hidden" name="n_ingredients_max" id="n_ingredients_max" value="20">
+            </div>
+        
+            <label for="rating" class="rating-label">{{ form.rating.label }}</label>
+            <div class="star-rating">
+                {% for i in "54321" %}
+                    <input type="radio" name="stars" value="{{ i }}" id="star{{ i }}"
+                        {% if form.instance.rating|stringformat:"s" == i %} checked {% endif %}>
+                    <label for="star{{ i }}">&#9733;</label>
+                {% endfor %}
+
+                <input type="radio" name="stars" value="0" id="star0"
+                    {% if form.instance.rating == 0 %} checked {% endif %}>
+                <label for="star0" style="display: none;">&#9733;</label>
+            </div>
+            
+            <div class="filter-item">
+                <label for="recipe_date_min">{{ form.recipe_date_min.label }}</label>
+                {{ form.recipe_date_min }}
+            </div>
+        </div>
+
         <button type="submit">Search</button>
-    </form>
-</div>
-
-<div class="filters">
-    <form method="GET" action="{% url 'result' %}">
-        <div class="filter-item">
-            <label>Number of Steps</label>
-            <div id="n_steps_slider"></div>
-            <span id="n_steps_min_text">1</span> - 
-            <span id="n_steps_max_text">50</span>
-            <input type="hidden" name="n_steps_min" id="n_steps_min" value="1">
-            <input type="hidden" name="n_steps_max" id="n_steps_max" value="50">
-        </div>
-        
-        <div class="filter-item">
-            <label>Preparation Time (minutes)</label>
-            <div id="prep_time_slider"></div>
-            <span id="prep_time_min_text">1</span> - 
-            <span id="prep_time_max_text">10000</span>
-            <input type="hidden" name="prep_time_min" id="prep_time_min" value="1">
-            <input type="hidden" name="prep_time_max" id="prep_time_max" value="10000">
-        </div>
-        
-        <div class="filter-item">
-            <label>Number of Ingredients</label>
-            <div id="n_ingredients_slider"></div>
-            <span id="n_ingredients_min_text">1</span> - 
-            <span id="n_ingredients_max_text">20</span>
-            <input type="hidden" name="n_ingredients_min" id="n_ingredients_min" value="1">
-            <input type="hidden" name="n_ingredients_max" id="n_ingredients_max" value="20">
-        </div>
-    
-        <label for="rating" class="rating-label">{{ form.rating.label }}</label>
-        <div class="star-rating">
-            {% for i in "54321" %}
-                <input type="radio" name="stars" value="{{ i }}" id="star{{ i }}"
-                    {% if form.instance.rating|stringformat:"s" == i %} checked {% endif %}>
-                <label for="star{{ i }}">&#9733;</label>
-            {% endfor %}
-
-            <input type="radio" name="stars" value="0" id="star0"
-                {% if form.instance.rating == 0 %} checked {% endif %}>
-            <label for="star0" style="display: none;">&#9733;</label>
-        </div>
-        
-        
-        <div class="filter-item">
-            <label for="recipe_date">{{ form.recipe_date.label }}</label>
-            {{ form.recipe_date }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>
 
@@ -67,12 +64,13 @@
         display: flex;
         justify-content: center;
         margin-top: 50px;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
     }
     .search-box {
-        width: 60%;
+        width: 100%;
         position: relative;
-        display: flex;
-        align-items: center;
     }
     .search-box input[type="text"] {
         width: 100%;
@@ -83,8 +81,6 @@
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
     .search-box button {
-        position: absolute;
-        right: 10px;
         padding: 12px 20px;
         background-color: #28a745;
         border: none;
@@ -93,12 +89,13 @@
         font-size: 18px;
         cursor: pointer;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        display: block;
+        width: 100%;
+        text-align: center;
     }
     .filters {
         margin-top: 30px;
-        width: 60%;
-        margin-left: auto;
-        margin-right: auto;
     }
     .filter-item {
         margin-bottom: 20px;
@@ -141,13 +138,11 @@
     .star-rating label:hover ~ label {
         color: #f39c12;
     }
-
-
 </style>
 
 <script>
     $(function() {
-        // Initialization of jQuery UI Slider for the filters
+        // Initialize sliders and ensure their values are synchronized with the form inputs
         $("#n_steps_slider").slider({
             range: true,
             min: 1,
@@ -186,24 +181,36 @@
                 $("#n_ingredients_max_text").text(ui.values[1]);
             }
         });
-    });
-    
-    document.addEventListener('DOMContentLoaded', function () {
-            const star1Input = document.getElementById('star1');
-            const star0Input = document.getElementById('star0');
-            const star1Label = document.querySelector('label[for="star1"]');
 
-            star1Label.addEventListener('click', function (event) {
-                // If the first star is already selected
-                if (star1Input.checked) {
-                    // Prevent the default behavior of the label click
-                    event.preventDefault();
-                    // Deselect the first star by selecting the hidden 0-star input
-                    star0Input.checked = true;
-                    // Trigger change event to update form state
-                    star0Input.dispatchEvent(new Event('change'));
-                }
-            });
+        // Ensure that all filter values are included in the form submission
+        $("form.search-box").submit(function() {
+            $("#n_steps_min").val($("#n_steps_slider").slider("values", 0));
+            $("#n_steps_max").val($("#n_steps_slider").slider("values", 1));
+
+            $("#prep_time_min").val($("#prep_time_slider").slider("values", 0));
+            $("#prep_time_max").val($("#prep_time_slider").slider("values", 1));
+
+            $("#n_ingredients_min").val($("#n_ingredients_slider").slider("values", 0));
+            $("#n_ingredients_max").val($("#n_ingredients_slider").slider("values", 1));
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const star1Input = document.getElementById('star1');
+        const star0Input = document.getElementById('star0');
+        const star1Label = document.querySelector('label[for="star1"]');
+
+        star1Label.addEventListener('click', function (event) {
+            // If the first star is already selected
+            if (star1Input.checked) {
+                // Prevent the default behavior of the label click
+                event.preventDefault();
+                // Deselect the first star by selecting the hidden 0-star input
+                star0Input.checked = true;
+                // Trigger change event to update form state
+                star0Input.dispatchEvent(new Event('change'));
+            }
+        });
+    });
 </script>
 {% endblock %}

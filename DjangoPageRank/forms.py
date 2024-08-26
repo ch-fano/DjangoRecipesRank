@@ -20,7 +20,7 @@ class SearchForm(forms.Form):
         widget=forms.NumberInput(attrs={'type': 'range', 'min': '1', 'max': '50', 'value': '50'})
     )
 
-    recipe_date = forms.CharField(
+    recipe_date_min = forms.CharField(
         label="Recipe Date",
         max_length=50,
         required=False,
