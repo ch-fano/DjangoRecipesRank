@@ -59,7 +59,6 @@ class Index:
             reader = list(csv.DictReader(csvfile))  # Converti il reader in una lista per ottenere il numero totale di righe
 
             progress_bar = tqdm(total=len(self.rating_dict) if not limit else limit, desc="Indexing Recipes")
-
             # Inizializza tqdm per mostrare la progress bar
             for i, row in enumerate(reader):
                 if str(row['id']) in self.rating_dict.keys():
@@ -88,4 +87,11 @@ class Index:
 
 
 if __name__ == '__main__':
-    my_index = Index(force_build_index=True, limit=10000)
+    with open('./SearchEngine/dataset/RAW_recipes.csv', 'r', encoding='utf-8') as csvfile:
+        reader = list(csv.DictReader(csvfile))
+        max=0
+        for i, row in enumerate(reader):
+            if int(row['minutes']) > max:
+                max = int(row['minutes'])
+        print('max prep time is {}'.format(max))
+    #my_index = Index(force_build_index=True, limit=10000)
