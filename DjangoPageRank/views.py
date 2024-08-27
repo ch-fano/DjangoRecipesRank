@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
-from SearchEngine.Controller import Controller
+from SearchEngine.controller import Controller
 from SearchEngine.index import Index
 from SearchEngine.model import IRModel
 from .forms import SearchForm
@@ -43,7 +43,7 @@ def get_result(request):
         my_index = Index()
         model = IRModel(my_index)
         my_controller = Controller(my_index, model, cleaned_data)
-        ctx['recepies'] = my_controller.search()
+        ctx['recipes'] = my_controller.search()
 
         #TODO: visualizzare i risutltati della ricerca utilizzando i dati sopra
         # Render the result template with the context

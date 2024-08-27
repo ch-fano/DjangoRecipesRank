@@ -15,7 +15,7 @@ class ExtractEmotions:
             top_k=7,
             max_length=512,
             truncation=True,
-            device=0
+            #device=0
         )(document)
 
 

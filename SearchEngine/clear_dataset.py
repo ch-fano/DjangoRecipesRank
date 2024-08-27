@@ -1,3 +1,5 @@
+import csv
+import os
 import pickle
 
 
@@ -45,9 +47,36 @@ def clear_dataset(min_num_review, max_num_review):
         del rating_dict[recipe_id]
 
     write_pickles(rating_dict, review_dict)
+    filter_csv_files(review_dict.keys())
+
 
     print('Finished to clear the dataset, remaining recipes: ', len(review_dict), '\nDeleted ', tot_deleted, ' recipes')
 
+def filter_csv_files(valid_ids):
+    # Filter RAW_interactions.csv
+    filter_csv('./SearchEngine/dataset/RAW_interactions.csv', valid_ids, 'recipe_id')
+
+    # Filter RAW_ratings.csv
+    filter_csv('./SearchEngine/dataset/RAW_recipes.csv', valid_ids, 'id')
+
+
+def filter_csv(file_path, valid_ids, id_field):
+    temp_file_path = file_path.replace('.csv', '_filtered.csv')
+
+    with open(file_path, 'r', newline='', encoding='utf-8') as infile, open(temp_file_path, 'w', newline='', encoding='utf-8') as outfile:
+        reader = csv.DictReader(infile)
+        writer = csv.DictWriter(outfile, fieldnames=reader.fieldnames)
+
+        writer.writeheader()
+
+        for row in reader:
+            if row[id_field] in valid_ids:
+                # Convert the row to a dictionary (already in dictionary form)
+                filtered_row = {key: row[key] for key in reader.fieldnames}
+                writer.writerow(filtered_row)
+
+    # Replace the original file with the filtered one
+    #os.replace(temp_file_path, file_path)
 
 if __name__ == '__main__':
     clear_dataset(min_num_review=7, max_num_review=70)

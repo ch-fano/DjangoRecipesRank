@@ -7,7 +7,6 @@
     <form class="search-box" method="post" action="{% url 'result' %}">
         {% csrf_token %}
         {{ form.text_search }}
-
         <div class="filters">
             <div class="filter-item">
                 <label>Number of Steps</label>

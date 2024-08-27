@@ -6,15 +6,15 @@
     <div class="row">
         <div class="col">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                {% for recepie in recepies %}
+                {% for recipe in recipes %}
                     <div class="col">
                         <div class="card h-100">
                             <div class="card-body">
-                                <h5 class="card-title">{{ recepie.name }}</h5>
+                                <h5 class="card-title">{{ recipe.name }}</h5>
                                 <div class="card-text"> 
                                     <ul>
-                                        <li>Steps: {{ recepie.n_steps }}</li>
-                                        <li>Time: {{ recepie.prep_time }}</li>
+                                        <li>Steps: {{ recipe.n_steps }}</li>
+                                        <li>Time: {{ recipe.prep_time }}</li>
                                     </ul>
                                 </div>
                             </div>

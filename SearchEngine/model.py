@@ -4,7 +4,7 @@ from whoosh.scoring import WeightingModel
 from whoosh.scoring import BM25F
 
 
-class Recepie:
+class Recipe:
 
     def __init__(self, id, name, steps, n_steps, description, date, prep_time, rating, ingredients, n_ingredients):
         self.id = id
@@ -25,14 +25,14 @@ class Recepie:
 
 
 class IRModel:
-    def __init__(self, index: Index, weightingModel: WeightingModel = BM25F):
+    def __init__(self, index: Index, weighting_model: WeightingModel = BM25F):
         self.index = index
-        self.model = weightingModel
+        self.model = weighting_model
         self.query = ''
 
-    def search(self, query: str, resLimit = -1, sentiments=None, verbose=True):
-        resDict = []
-        correctedString = ''
+    def search(self, query: str, res_limit = -1, sentiments=None, verbose=True):
+        res_dict = []
+        correctedstring = ''
         s = self.index.index.searcher(weighting=self.model)
         try:
             # if isinstance(self.model, SentimentModelWA):
@@ -42,20 +42,20 @@ class IRModel:
 
             qp = qparser.MultifieldParser(['recipe_name', 'description', 'ingredients'], schema=self.index.schema, group=qparser.OrGroup)
 
-            parsedQ = qp.parse(query)
-            if (verbose):
+            parsedq = qp.parse(query)
+            if verbose:
                 print(f'Input query: {query}')
-                print(f'Parsed query: {parsedQ}')
-            results = s.search(parsedQ, terms=True, limit=resLimit) if resLimit > 0 else s.search(parsedQ, terms=True)
+                print(f'Parsed query: {parsedq}')
+            results = s.search(parsedq, terms=True, limit=res_limit) if res_limit > 0 else s.search(parsedq, terms=True)
             for i in results:
-                resDict.append(Recepie(i['recipe_id'], i['recipe_name'], i['steps'], i['n_steps'], i['description'],
+                res_dict.append(Recipe(i['recipe_id'], i['recipe_name'], i['steps'], i['n_steps'], i['description'],
                                            i['recipe_date'], i['prep_time'], i['rating'], i['ingredients'],
                                            i['n_ingredients']))
 
             # Did you Mean? codice per implementarlo
             # corrected = s.correct_query(parsedQ, query)
             # if corrected.query != parsedQ:
-            #     correctedString = reduce(
+            #     correctedstring = reduce(
             #         lambda x, y: x + " " + str(y[1]),
             #         list(filter(lambda term: term[1] if term[0] == "name" else "", corrected.query.iter_all_terms())),
             #         ""
@@ -65,7 +65,7 @@ class IRModel:
         finally:
             s.close()
         #return correctedString, resDict
-        return resDict
+        return res_dict
 
 
 if __name__ == '__main__':
@@ -75,6 +75,6 @@ if __name__ == '__main__':
 
     while True:
         query = input('Input your query: ')
-        resdict = model.search(query, verbose=True)
-        for row, (key, values) in enumerate(resdict.items()):
+        res = model.search(query, verbose=True)
+        for row, (key, values) in enumerate(res):
             print(f'{row}: {key}: {values}')

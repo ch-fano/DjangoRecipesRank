@@ -53,18 +53,13 @@ class Index:
         ix = create_in(self.index_dir, self.schema)
         writer = ix.writer()
 
-        csv_file_path = os.path.join(self.data_dir, 'RAW_recipes.csv')
+        csv_file_path = os.path.join(self.data_dir, 'RAW_recipes_filtered.csv')
 
         with open(csv_file_path, 'r', encoding='utf-8') as csvfile:
             reader = list(csv.DictReader(csvfile))  # Converti il reader in una lista per ottenere il numero totale di righe
 
-            i = 0
-            progress_bar = tqdm(total=len(self.rating_dict) if not limit else limit, desc="Indexing Recipes")
             # Inizializza tqdm per mostrare la progress bar
-            for row in reader:
-                if str(row['id']) in self.rating_dict.keys():
-                    i+= 0
-                    progress_bar.update(1)
+            for i, row in tqdm(enumerate(reader), desc="Indexing Recipes", total=len(reader) if not limit else limit):
 
                     writer.add_document(
                         recipe_id=row['id'],
@@ -80,11 +75,9 @@ class Index:
                     )
                     if limit and i >= limit:
                         writer.commit()
-                        progress_bar.close()
                         return ix
 
         writer.commit()
-        progress_bar.close()
         return ix
 
 
