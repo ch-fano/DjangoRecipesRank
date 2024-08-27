@@ -123,9 +123,6 @@ class ReviewsIndex:
                 recipe_id, sentiments = future.result()
                 sentiment_dict[recipe_id] = sentiments
 
-        for k, v in sentiment_dict.items():
-            print(k, '->', v, end='\n\n')
-
         with open(f"./{self.config_data['INDEX']['SENTIMENT']}", mode='wb') as f:
             pickle.dump(sentiment_dict, f)
 

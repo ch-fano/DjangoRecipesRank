@@ -4,6 +4,7 @@ from django.views.decorators.http import require_POST
 from SearchEngine.controller import Controller
 from SearchEngine.index import Index
 from SearchEngine.model import IRModel
+from SearchEngine.sentiment.sentiment_model import SentimentModelWA
 from .forms import SearchForm
 import pickle
 
@@ -40,8 +41,13 @@ def get_result(request):
         #     'n_ingredients_max': cleaned_data.get('n_ingredients_max', ''),
         # }
 
+
         my_index = Index()
-        model = IRModel(my_index)
+        if cleaned_data['sentiment']:
+            model = IRModel(my_index, SentimentModelWA())
+        else:
+            model = IRModel(my_index)
+
         my_controller = Controller(my_index, model, cleaned_data)
         ctx['recipes'] = my_controller.search()
 

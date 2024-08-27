@@ -6,7 +6,18 @@
 <div class="search-container">
     <form class="search-box" method="post" action="{% url 'result' %}">
         {% csrf_token %}
-        {{ form.text_search }}
+        
+        <div class="text-search-container">
+            {{ form.text_search }}
+            <label for="id_sentiment" class="sentiment-label">{{ form.sentiment.label }}</label>
+            {{ form.sentiment }}
+        </div>
+        
+        <div class="number-of-results-container">
+            <label for="id_number_of_results">{{ form.number_of_results.label }}</label>
+            {{ form.number_of_results }}
+        </div>
+
         <div class="filters">
             <div class="filter-item">
                 <label>Number of Steps</label>
@@ -34,6 +45,15 @@
                 <input type="hidden" name="n_ingredients_min" id="n_ingredients_min" value="1">
                 <input type="hidden" name="n_ingredients_max" id="n_ingredients_max" value="20">
             </div>
+        
+            <div class="filter-item">
+                <label>Select the year range</label>
+                <div id="years_slider"></div>
+                <span id="years_min_text">2000</span> -
+                <span id="years_max_text">2024</span>
+                <input type="hidden" name="years_min" id="years_min" value="2000">
+                <input type="hidden" name="years_max" id="years_max" value="2024">
+            </div>
 
             <label class="rating-label">{{ form.rating.label }}</label>
             <div class="star-rating">
@@ -45,11 +65,6 @@
                 <input type="radio" name="rating" value="0" id="star0"
                     {% if form.rating.value|stringformat:"s" == "0" %} checked {% endif %}>
                 <label for="star0" style="display: none;">&#9733;</label>
-            </div>
-
-            <div class="filter-item">
-                <label for="recipe_date_min">{{ form.recipe_date_min.label }}</label>
-                {{ form.recipe_date_min }}
             </div>
         </div>
 
@@ -70,13 +85,23 @@
         width: 100%;
         position: relative;
     }
+    .text-search-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
     .search-box input[type="text"] {
-        width: 100%;
+        width: 70%;
         padding: 15px 20px;
         font-size: 18px;
         border-radius: 30px;
         border: 1px solid #ced4da;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .sentiment-label {
+        font-weight: bold;
+        margin-right: 10px;
     }
     .search-box button {
         padding: 12px 20px;
@@ -92,13 +117,16 @@
         width: 100%;
         text-align: center;
     }
+    .number-of-results-container {
+        margin-bottom: 20px;
+    }
     .filters {
         margin-top: 30px;
     }
     .filter-item {
         margin-bottom: 20px;
     }
-    .filter-item label, .rating-label{
+    .filter-item label, .rating-label {
         display: block;
         font-weight: bold;
         margin-bottom: 10px;
@@ -179,6 +207,19 @@
                 $("#n_ingredients_max_text").text(ui.values[1]);
             }
         });
+        
+        $("#years_slider").slider({
+            range: true,
+            min: 2000,
+            max: 2024,
+            values: [2000, 2024],
+            slide: function(event, ui) {
+                $("#years_min").val(ui.values[0]);
+                $("#years_max").val(ui.values[1]);
+                $("#years_min_text").text(ui.values[0]);
+                $("#years_max_text").text(ui.values[1]);
+            }
+        });
 
         // Ensure that all filter values are included in the form submission
         $("form.search-box").submit(function() {
@@ -190,6 +231,9 @@
 
             $("#n_ingredients_min").val($("#n_ingredients_slider").slider("values", 0));
             $("#n_ingredients_max").val($("#n_ingredients_slider").slider("values", 1));
+            
+            $("#years_min").val($("years_slider").slider("values", 0));
+            $("#years_max").val($("#years_slider").slider("values", 1));
         });
     });
 
