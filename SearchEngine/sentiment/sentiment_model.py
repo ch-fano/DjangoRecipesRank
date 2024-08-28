@@ -53,7 +53,7 @@ class SentimentModelWA(BM25F):  # Sentiment Model Weighted Average
 
         id = searcher.stored_fields(docnum)['recipe_id']
         sentiment_score = self.get_sentiment_score(id, self.user_sentiment)
-        print('sentiment score is: ' + sentiment_score)
+        print('sentiment score is: ' + str(sentiment_score))
         return ((score / 30 * 70) + (sentiment_score * 30)) / 2
 
 
