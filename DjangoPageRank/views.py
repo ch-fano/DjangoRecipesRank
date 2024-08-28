@@ -1,6 +1,10 @@
+import ast
+
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.conf import settings
+from whoosh.qparser import QueryParser
+
 from SearchEngine.controller import Controller
 from SearchEngine.model import IRModel
 from SearchEngine.sentiment.sentiment_model import SentimentModelWA
@@ -44,14 +48,29 @@ def get_result(request):
         controller.set_data(cleaned_data)
         ctx['recipes'] = controller.search()
 
-        #TODO: visualizzare i risutltati della ricerca utilizzando i dati sopra
         # Render the result template with the context
         return render(request, 'result.html', ctx)
 
     return redirect(get_home)
 
-def get_recipe(request):
-    review_dict = getattr(settings, 'REVIEW_DICT', None)
-    pass
+def recipe_detail(request, recipe_id):
+    ctx = {}
+    index = getattr(settings, 'INDEX', None)
 
+    with index.index.searcher() as searcher:
+        document = searcher.document(recipe_id=recipe_id)
+        if document:
+            document['ingredients'] = ast.literal_eval(document.get("ingredients", '[]'))
+            document['steps'] = ast.literal_eval(document.get("steps", '[]'))
+            ctx['recipe'] = document
+    # with index.searcher() as searcher:
+    #     query_parser = QueryParser("recipe_id", schema=index.schema)
+    #     query = query_parser.parse(recipe_id)
+    #
+    #     results = searcher.search(query, limit=1)
+    #
+    #     if len(results) > 0:
+    #         doc = results[0]
+    #         ctx['recipe'] = doc
 
+    return render(request, 'detail.html', ctx)
