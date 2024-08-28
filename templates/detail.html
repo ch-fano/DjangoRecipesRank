@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+        <h1 class="display-4">{{ recipe.recipe_name }}</h1>
+        <p class="lead">{{ recipe.description }}</p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Ingredients ({{ recipe.n_ingredients }})</h3>
+                <ul class="list-group">
+                    {% with recipe.ingredients as ingredients %}
+                        {% for ingredient in ingredients %}
+                            <li class="list-group-item">{{ ingredient }}</li>
+                        {% endfor %}
+                    {% endwith %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h3>Preparation Time</h3>
+                <p>{{ recipe.prep_time }} minutes</p>
+            </div>
+        </div>
+        <div style="padding: 0.5rem;"></div>
+        <h3>Steps ({{ recipe.n_steps }})</h3>
+        <ol>
+            {% for step in recipe.steps %}
+                <li>{{ step }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endblock %}
