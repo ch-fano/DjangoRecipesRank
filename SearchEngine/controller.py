@@ -1,31 +1,49 @@
+from whoosh.scoring import BM25F
+
 from SearchEngine.index import Index
 from SearchEngine.model import IRModel
 
 
 class Controller:
 
-    def __init__(self, index:Index, model:IRModel, cleaned_data:dict):
+    def __init__(self, index:Index):
         self.index = index
-        self.model = model
-        self.cleaned_data = cleaned_data
+        self.search_model = None
+        self.data = None
 
     def search(self):
-        #TODO: implementare uno switch tra sentiment e no
 
-        recipes = self.model.search(query=self.get_query) #TODO: Aggiungere un campo per prendere il limite della ricerca
+        if not self.data['use_sentiment'] and isinstance(self.search_model.model, BM25F):
+            # indexing model
+            recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']))
+        else:
+            # sentiment model
+            recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']), sentiments=self.data.get['chosen_sentiments'])
+
         return recipes
 
     @property
     def get_query(self):
+        if not self.search_model or not self.data:
+            return ''
+
         query = ''
-        if self.cleaned_data.get('text_search', ''):
-            query += self.cleaned_data.get('text_search')
-        if self.cleaned_data.get('n_steps_min', 0) and self.cleaned_data.get('n_steps_max', ''):
-            query += f" AND n_steps:[{int(self.cleaned_data.get('n_steps_min'))} TO {int(self.cleaned_data.get('n_steps_max'))}]"
-        if self.cleaned_data.get('prep_time_min', 0) and self.cleaned_data.get('prep_time_max', ''):
-            query += f" AND prep_time:[{int(self.cleaned_data.get('prep_time_min'))} TO {int(self.cleaned_data.get('prep_time_max'))}]"
-        if self.cleaned_data.get('rating', ''):
-            query += f" AND rating:[{int(self.cleaned_data.get('rating'))} TO]"
-        if self.cleaned_data.get('n_ingredients_min', 0) and self.cleaned_data.get('n_ingredients_max', ''):
-            query += f" AND n_ingredients:[{int(self.cleaned_data.get('n_ingredients_min'))} TO {int(self.cleaned_data.get('n_ingredients_max'))}]"
+        if self.data.get('text_search', ''):
+            query += self.data.get('text_search')
+        if self.data.get('n_steps_min', 0) and self.data.get('n_steps_max', 50):
+            query += f" AND n_steps:[{int(self.data.get('n_steps_min'))} TO {int(self.data.get('n_steps_max'))}]"
+        if self.data.get('prep_time_min', 0) and self.data.get('prep_time_max', 10000):
+            query += f" AND prep_time:[{int(self.data.get('prep_time_min'))} TO {int(self.data.get('prep_time_max'))}]"
+        if self.data.get('rating', ''):
+            query += f" AND rating:[{int(self.data.get('rating'))} TO]"
+        if self.data.get('n_ingredients_min', 0) and self.data.get('n_ingredients_max', 20):
+            query += f" AND n_ingredients:[{int(self.data.get('n_ingredients_min'))} TO {int(self.data.get('n_ingredients_max'))}]"
+        if self.data.get('recipe_date_min', 2000) and self.data.get('recipe_date_max', 2024):
+            query += f" AND date:[{int(self.data.get('recipe_date_min'))} TO {int(self.data.get('recipe_date_max'))}]"
         return query
+
+    def set_model(self, model: IRModel):
+        self.search_model = model
+
+    def set_data(self, clean_data:dict):
+        self.data = clean_data

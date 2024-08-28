@@ -10,7 +10,8 @@ class SentimentModelWA(BM25F):  # Sentiment Model Weighted Average
         self.reviews_index = ReviewsIndex()
         self.use_final = True
 
-    def cosine_similarity(self, doc: dict, query: dict):
+    @staticmethod
+    def cosine_similarity(doc: dict, query: dict):
         '''
         Calcola cosine similarity.
         '''
