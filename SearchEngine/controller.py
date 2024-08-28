@@ -12,13 +12,13 @@ class Controller:
         self.data = None
 
     def search(self):
-
+        print(f"model in use is: {(self.search_model.model)}")
         if not self.data['use_sentiment'] and isinstance(self.search_model.model, BM25F):
             # indexing model
             recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']))
         else:
             # sentiment model
-            recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']), sentiments=self.data.get['chosen_sentiments'])
+            recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']), sentiments=self.data['chosen_sentiments'])
 
         return recipes
 
@@ -35,11 +35,11 @@ class Controller:
         if self.data.get('prep_time_min', 0) and self.data.get('prep_time_max', 10000):
             query += f" AND prep_time:[{int(self.data.get('prep_time_min'))} TO {int(self.data.get('prep_time_max'))}]"
         if self.data.get('rating', ''):
-            query += f" AND rating:[{int(self.data.get('rating'))} TO]"
+            query += f" AND rating:[{int(self.data.get('rating'))} TO 5]"
         if self.data.get('n_ingredients_min', 0) and self.data.get('n_ingredients_max', 20):
             query += f" AND n_ingredients:[{int(self.data.get('n_ingredients_min'))} TO {int(self.data.get('n_ingredients_max'))}]"
         if self.data.get('recipe_date_min', 2000) and self.data.get('recipe_date_max', 2024):
-            query += f" AND date:[{int(self.data.get('recipe_date_min'))} TO {int(self.data.get('recipe_date_max'))}]"
+            query += f" AND recipe_date:[{self.data.get('recipe_date_min')}-01-01 TO {self.data.get('recipe_date_max')}-12-31]"
         return query
 
     def set_model(self, model: IRModel):

@@ -3,6 +3,8 @@ from whoosh import qparser
 from whoosh.scoring import WeightingModel
 from whoosh.scoring import BM25F
 
+from SearchEngine.sentiment.sentiment_model import SentimentModelWA
+
 
 class Recipe:
 
@@ -18,10 +20,8 @@ class Recipe:
         self.ingredients = ingredients
         self.n_ingredients = n_ingredients
 
-
     def __str__(self):
         return f'[{self.id}] {self.name}'
-
 
 
 class IRModel:
@@ -35,8 +35,8 @@ class IRModel:
         correctedstring = ''
         s = self.index.index.searcher(weighting=self.model)
         try:
-            # if isinstance(self.model, SentimentModelWA):
-            #     self.model.set_user_sentiment(sentiments)
+            if isinstance(self.model, SentimentModelWA):
+                self.model.set_user_sentiment(sentiments)
             # elif isinstance(self.model, Doc2VecModel):
             #     self.model.set_query(query)
 
