@@ -61,10 +61,25 @@ class SearchForm(forms.Form):
         widget=forms.NumberInput(attrs={'type': 'range', 'min': '1', 'max': '20', 'value': '20'})
     )
 
-    sentiment = forms.BooleanField(
+    use_sentiment = forms.BooleanField(
         label="Sentiment",
         required=False,
         widget=forms.CheckboxInput()
+    )
+
+    chosen_sentiments = forms.MultipleChoiceField(
+        label="Chosen Sentiments",
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        choices= [
+            ('anger', 'Anger'),
+            ('disgust', 'Disgust'),
+            ('fear', 'Fear'),
+            ('joy', 'Joy'),
+            ('neutral', 'Neutral'),
+            ('sadness', 'Sadness'),
+            ('surprise', 'Surprise'),
+        ]
     )
 
     number_of_results = forms.ChoiceField(

@@ -6,24 +6,27 @@ from SearchEngine.model import IRModel
 
 class Controller:
 
-    def __init__(self, index:Index, model:IRModel, cleaned_data:dict):
+    def __init__(self, index:Index):
         self.index = index
-        self.model = model
-        self.data = cleaned_data
+        self.search_model = None
+        self.data = None
 
     def search(self):
 
-        if not self.data['sentiment'] and isinstance(self.model.model, BM25F):
+        if not self.data['use_sentiment'] and isinstance(self.search_model.model, BM25F):
             # indexing model
-            recipes = self.model.search(query=self.get_query, res_limit=int(self.data['number_of_results']))
+            recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']))
         else:
             # sentiment model
-            recipes = self.model.search(query=self.get_query, res_limit=int(self.data['number_of_results']), sentiments=[])
+            recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']), sentiments=self.data.get['chosen_sentiments'])
 
         return recipes
 
     @property
     def get_query(self):
+        if not self.search_model or not self.data:
+            return ''
+
         query = ''
         if self.data.get('text_search', ''):
             query += self.data.get('text_search')
@@ -35,4 +38,12 @@ class Controller:
             query += f" AND rating:[{int(self.data.get('rating'))} TO]"
         if self.data.get('n_ingredients_min', 0) and self.data.get('n_ingredients_max', 20):
             query += f" AND n_ingredients:[{int(self.data.get('n_ingredients_min'))} TO {int(self.data.get('n_ingredients_max'))}]"
+        if self.data.get('recipe_date_min', 2000) and self.data.get('recipe_date_max', 2024):
+            query += f" AND date:[{int(self.data.get('recipe_date_min'))} TO {int(self.data.get('recipe_date_max'))}]"
         return query
+
+    def set_model(self, model: IRModel):
+        self.search_model = model
+
+    def set_data(self, clean_data:dict):
+        self.data = clean_data

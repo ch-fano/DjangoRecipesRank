@@ -10,7 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import pickle
 from pathlib import Path
+
+from SearchEngine.controller import Controller
+from SearchEngine.index import Index
+from SearchEngine.model import IRModel
+from SearchEngine.sentiment.sentiment_model import SentimentModelWA
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -128,3 +134,15 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+try:
+    with open('./SearchEngine/dataset/review.pkl', 'rb') as f:
+        REVIEW_DICT = pickle.load(f)
+except Exception:
+    REVIEW_DICT = None
+    raise Exception('Execute review.py first')
+
+INDEX = Index()
+BASE_MODEL = IRModel(INDEX)
+SENTIMENT_MODEL = IRModel(INDEX, SentimentModelWA())
+CONTROLLER = Controller(INDEX)

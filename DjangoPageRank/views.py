@@ -1,22 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
-
+from django.conf import settings
 from SearchEngine.controller import Controller
-from SearchEngine.index import Index
 from SearchEngine.model import IRModel
 from SearchEngine.sentiment.sentiment_model import SentimentModelWA
 from .forms import SearchForm
-import pickle
 
 # download the dataset only one time
-
-try:
-    with open('./SearchEngine/dataset/review.pkl', 'rb') as f:
-        review_dict = pickle.load(f)
-except Exception:
-    review_dict = None
-    raise Exception('Execute review.py first')
-
 
 def get_home(request):
     form = SearchForm()
@@ -41,15 +31,16 @@ def get_result(request):
         #     'n_ingredients_max': cleaned_data.get('n_ingredients_max', ''),
         # }
 
-
-        my_index = Index()
-        if cleaned_data['sentiment']:
-            model = IRModel(my_index, SentimentModelWA())
+        controller = getattr(settings,'CONTROLLER', None)
+        if cleaned_data['use_sentiment']:
+            model = getattr(settings, 'SENTIMENT_MODEL', None)
         else:
-            model = IRModel(my_index)
+            model = getattr(settings, 'BASE_MODEL', None)
 
-        my_controller = Controller(my_index, model, cleaned_data)
-        ctx['recipes'] = my_controller.search()
+        print(ctx['chosen_sentiments'])
+        controller.set_model(model)
+        controller.set_data(cleaned_data)
+        ctx['recipes'] = controller.search()
 
         #TODO: visualizzare i risutltati della ricerca utilizzando i dati sopra
         # Render the result template with the context
@@ -58,6 +49,7 @@ def get_result(request):
     return redirect(get_home)
 
 def get_recipe(request):
+    review_dict = getattr(settings, 'REVIEW_DICT', None)
     pass
 
 

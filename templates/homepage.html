@@ -6,15 +6,29 @@
 <div class="search-container">
     <form class="search-box" method="post" action="{% url 'result' %}">
         {% csrf_token %}
-        
+
         <div class="text-search-container">
             {{ form.text_search }}
-            <label for="id_sentiment" class="sentiment-label">{{ form.sentiment.label }}</label>
-            {{ form.sentiment }}
+            <label for="id_use_sentiment" class="sentiment-label">{{ form.use_sentiment.label }}</label>
+            {{ form.use_sentiment }}
         </div>
-        
+
+        <div class="sentiments-container">
+            <label for="id_chosen_sentiments">{{ form.chosen_sentiments.label }}</label>
+            <div class="sentiments-checkboxes">
+                {% for value, label in form.chosen_sentiments.field.choices %}
+                <div class="sentiment-checkbox">
+                    <input type="checkbox" name="{{ form.chosen_sentiments.name }}" value="{{ value }}"
+                        id="id_chosen_sentiments_{{ forloop.counter }}" 
+                        {% if value in form.chosen_sentiments.value %} checked {% endif %}>
+                    <label for="id_chosen_sentiments_{{ forloop.counter }}">{{ label }}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
         <div class="number-of-results-container">
-            <label for="id_number_of_results">{{ form.number_of_results.label }}</label>
+            <label for="id_number_of_results"><strong>{{ form.number_of_results.label }}</strong></label>
             {{ form.number_of_results }}
         </div>
 
@@ -45,7 +59,7 @@
                 <input type="hidden" name="n_ingredients_min" id="n_ingredients_min" value="1">
                 <input type="hidden" name="n_ingredients_max" id="n_ingredients_max" value="20">
             </div>
-        
+
             <div class="filter-item">
                 <label>Select the year range</label>
                 <div id="years_slider"></div>
@@ -58,9 +72,9 @@
             <label class="rating-label">{{ form.rating.label }}</label>
             <div class="star-rating">
                 {% for i in "54321" %}
-                    <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}"
-                        {% if form.rating.value|stringformat:"s" == i %} checked {% endif %}>
-                    <label for="star{{ i }}">&#9733;</label>
+                <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}"
+                    {% if form.rating.value|stringformat:"s" == i %} checked {% endif %}>
+                <label for="star{{ i }}">&#9733;</label>
                 {% endfor %}
                 <input type="radio" name="rating" value="0" id="star0"
                     {% if form.rating.value|stringformat:"s" == "0" %} checked {% endif %}>
@@ -81,16 +95,19 @@
         margin-left: auto;
         margin-right: auto;
     }
+
     .search-box {
         width: 100%;
         position: relative;
     }
+
     .text-search-container {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 20px;
     }
+
     .search-box input[type="text"] {
         width: 70%;
         padding: 15px 20px;
@@ -99,10 +116,12 @@
         border: 1px solid #ced4da;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
+
     .sentiment-label {
         font-weight: bold;
         margin-right: 10px;
     }
+
     .search-box button {
         padding: 12px 20px;
         background-color: #28a745;
@@ -117,24 +136,31 @@
         width: 100%;
         text-align: center;
     }
+
     .number-of-results-container {
         margin-bottom: 20px;
     }
+
     .filters {
         margin-top: 30px;
     }
+
     .filter-item {
         margin-bottom: 20px;
     }
-    .filter-item label, .rating-label {
+
+    .filter-item label,
+    .rating-label {
         display: block;
         font-weight: bold;
         margin-bottom: 10px;
     }
+
     .filter-item div {
         display: inline-block;
         width: 75%;
     }
+
     .filter-item span {
         display: inline-block;
         width: 10%;
@@ -142,39 +168,75 @@
         font-weight: bold;
         font-size: 14px;
     }
+
     .rating-label {
         margin-bottom: 0;
     }
+
     .star-rating {
         display: flex;
         justify-content: left;
         flex-direction: row-reverse;
     }
+
     .star-rating input {
         display: none;
     }
+
     .star-rating label {
         font-size: 3rem;
         color: #ddd;
         cursor: pointer;
         padding: 0 10px;
     }
-    .star-rating input:checked ~ label,
+
+    .star-rating input:checked~label,
     .star-rating label:hover,
-    .star-rating label:hover ~ label {
+    .star-rating label:hover~label {
         color: #f39c12;
+    }
+
+    .sentiments-container {
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .sentiments-container label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .sentiments-checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .sentiment-checkbox {
+        margin-right: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .sentiment-checkbox input[type="checkbox"] {
+        margin-right: 8px;
+    }
+
+    .sentiment-checkbox label {
+        font-size: 16px;
+        cursor: pointer;
     }
 </style>
 
 <script>
-    $(function() {
-        // Initialize sliders and ensure their values are synchronized with the form inputs
+    $(function () {
         $("#n_steps_slider").slider({
             range: true,
             min: 1,
             max: 50,
             values: [1, 50],
-            slide: function(event, ui) {
+            slide: function (event, ui) {
                 $("#n_steps_min").val(ui.values[0]);
                 $("#n_steps_max").val(ui.values[1]);
                 $("#n_steps_min_text").text(ui.values[0]);
@@ -187,7 +249,7 @@
             min: 1,
             max: 10000,
             values: [1, 10000],
-            slide: function(event, ui) {
+            slide: function (event, ui) {
                 $("#prep_time_min").val(ui.values[0]);
                 $("#prep_time_max").val(ui.values[1]);
                 $("#prep_time_min_text").text(ui.values[0]);
@@ -200,20 +262,20 @@
             min: 1,
             max: 20,
             values: [1, 20],
-            slide: function(event, ui) {
+            slide: function (event, ui) {
                 $("#n_ingredients_min").val(ui.values[0]);
                 $("#n_ingredients_max").val(ui.values[1]);
                 $("#n_ingredients_min_text").text(ui.values[0]);
                 $("#n_ingredients_max_text").text(ui.values[1]);
             }
         });
-        
+
         $("#years_slider").slider({
             range: true,
             min: 2000,
             max: 2024,
             values: [2000, 2024],
-            slide: function(event, ui) {
+            slide: function (event, ui) {
                 $("#years_min").val(ui.values[0]);
                 $("#years_max").val(ui.values[1]);
                 $("#years_min_text").text(ui.values[0]);
@@ -221,8 +283,7 @@
             }
         });
 
-        // Ensure that all filter values are included in the form submission
-        $("form.search-box").submit(function() {
+        $("form.search-box").submit(function () {
             $("#n_steps_min").val($("#n_steps_slider").slider("values", 0));
             $("#n_steps_max").val($("#n_steps_slider").slider("values", 1));
 
@@ -231,8 +292,8 @@
 
             $("#n_ingredients_min").val($("#n_ingredients_slider").slider("values", 0));
             $("#n_ingredients_max").val($("#n_ingredients_slider").slider("values", 1));
-            
-            $("#years_min").val($("years_slider").slider("values", 0));
+
+            $("#years_min").val($("#years_slider").slider("values", 0));
             $("#years_max").val($("#years_slider").slider("values", 1));
         });
     });
@@ -243,16 +304,29 @@
         const star1Label = document.querySelector('label[for="star1"]');
 
         star1Label.addEventListener('click', function (event) {
-            // If the first star is already selected
             if (star1Input.checked) {
-                // Prevent the default behavior of the label click
                 event.preventDefault();
-                // Deselect the first star by selecting the hidden 0-star input
                 star0Input.checked = true;
-                // Trigger change event to update form state
                 star0Input.dispatchEvent(new Event('change'));
             }
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const useSentimentCheckbox = document.getElementById('id_use_sentiment');
+        const sentimentsContainer = document.querySelector('.sentiments-container');
+
+        function toggleSentimentsContainer() {
+            if (useSentimentCheckbox.checked) {
+                sentimentsContainer.style.display = 'block';
+            } else {
+                sentimentsContainer.style.display = 'none';
+            }
+        }
+
+        toggleSentimentsContainer();
+
+        useSentimentCheckbox.addEventListener('change', toggleSentimentsContainer);
     });
 </script>
 {% endblock %}
