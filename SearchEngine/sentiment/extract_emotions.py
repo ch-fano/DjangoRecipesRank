@@ -1,21 +1,25 @@
 from transformers import RobertaTokenizer, AutoModelForSequenceClassification, pipeline
+import torch
 
 
 class ExtractEmotions:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def __init__(self):
         self.tokenizer = RobertaTokenizer.from_pretrained(f"j-hartmann/emotion-english-distilroberta-base")
         self.model = AutoModelForSequenceClassification.from_pretrained(f"j-hartmann/emotion-english-distilroberta-base")
 
+
+
     def extract(self, document):
         return pipeline(
-            model=self.model,
+            model=self.model.to(ExtractEmotions.device),  # Sposta il modello sulla GPU se disponibile
             tokenizer=self.tokenizer,
             task="text-classification",
             top_k=7,
             max_length=512,
             truncation=True,
-            #device=0
+            device=ExtractEmotions.device  # Passa il dispositivo di calcolo al metodo pipeline
         )(document)
 
 
