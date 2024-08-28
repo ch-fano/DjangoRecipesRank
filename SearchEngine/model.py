@@ -30,19 +30,20 @@ class IRModel:
         self.model = weighting_model
         self.query = ''
 
-    def search(self, query: str, res_limit = -1, sentiments=None, verbose=True):
+    def search(self, query: str, res_limit=-1, sentiments=None, verbose=True):
         res_dict = []
         correctedstring = ''
-        s = self.index.index.searcher(weighting=self.model)
         try:
             if isinstance(self.model, SentimentModelWA):
                 self.model.set_user_sentiment(sentiments)
             # elif isinstance(self.model, Doc2VecModel):
             #     self.model.set_query(query)
 
+            s = self.index.index.searcher(weighting=self.model)
             qp = qparser.MultifieldParser(['recipe_name', 'description', 'ingredients'], schema=self.index.schema, group=qparser.OrGroup)
 
             parsedq = qp.parse(query)
+
             if verbose:
                 print(f'Input query: {query}')
                 print(f'Parsed query: {parsedq}')

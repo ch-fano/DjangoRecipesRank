@@ -8,6 +8,7 @@ from .forms import SearchForm
 
 # download the dataset only one time
 
+
 def get_home(request):
     form = SearchForm()
     return render(request, 'homepage.html', {'form': form})
