@@ -62,12 +62,9 @@ def recipe_detail(request, recipe_id):
             document['steps'] = ast.literal_eval(document.get("steps", '[]'))
             ctx['recipe'] = document
             ctx['reviews'] = review_dict[recipe_id] if review_dict else []
-
             if sentiment_index:
                 ctx['sentiment_list'] = sorted(sentiment_index.index[recipe_id].keys())
                 ctx['sentiment_vector'] = [sentiment_index.index[recipe_id][sentiment] for sentiment in ctx['sentiment_list']]
-                print(ctx['sentiment_vector'])
-                print(ctx['sentiment_list'])
             else:
                 ctx['sentiment_list'] = None
                 ctx['sentiment_vector'] = []

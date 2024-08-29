@@ -37,9 +37,11 @@ class ReadReview:
                 review_dict[row['recipe_id']].append({
                     'user_id': row['user_id'],
                     'date': row['date'],
-                    'rating': row['rating'],
+                    'rating': int(row['rating']),
                     'review': row['review']
                 })
+
+                review_dict[row['recipe_id']].sort(key=lambda x: x['date'], reverse=True)
 
         with open(os.path.join(self.data_dir, self.review_file), 'wb') as file:
             pickle.dump(review_dict, file)

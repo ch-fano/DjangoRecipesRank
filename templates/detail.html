@@ -1,14 +1,38 @@
 {% extends 'base.html' %}
 
 {% load static %}
+
 {% block content %}
+    <style>
+        .rating-container {
+            display: flex;
+            align-items: center; 
+            margin-top: 10px;
+        }
+
+        .star-rating {
+            font-size: 2em;
+            color: #ccc;
+            display: inline-block;
+        }
+
+        .rating-value {
+            font-size: 1.2em;
+            margin-left: 10px;
+            color: #333;
+        }
+    </style>
+    
+    
 <div class="container my-5">
     <h1 class="display-4">{{ recipe.recipe_name }}</h1>
     <p class="lead">{{ recipe.description }}</p>
 
-    <!-- Preparation Time directly below the description -->
-    <h3>Preparation Time</h3>
-    <p>{{ recipe.prep_time }} minutes</p>
+    <!-- Preparation Time with alert box to highlight it -->
+    <div class="alert alert-warning" role="alert">
+        <h3 class="alert-heading">Preparation Time</h3>
+        <p>{{ recipe.prep_time }} minutes</p>
+    </div>
 
     <div class="row">
         <div class="col-md-6">
@@ -32,12 +56,16 @@
     </div>
 
     <div style="padding: 0.5rem;"></div>
-    <h3>Steps ({{ recipe.n_steps }})</h3>
-    <ol>
-        {% for step in recipe.steps %}
-            <li>{{ step }}</li>
-        {% endfor %}
-    </ol>
+
+    <!-- Steps Section formatted like Ingredients -->
+    <div>
+        <h3>Steps ({{ recipe.n_steps }})</h3>
+        <ul class="list-group">
+            {% for step in recipe.steps %}
+                <li class="list-group-item">{{ step }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 
     <!-- Divider -->
     <div style="padding: 1.5rem;"></div>
@@ -48,11 +76,20 @@
         {% if reviews %}
             <ul class="list-group">
                 {% for review in reviews %}
-                    <li class="list-group-item" data-rating="{{ review.rating}}">
+                    <li class="list-group-item star-list" data-rating="{{ review.rating }}">
                         <strong>{{ review.user }}</strong>
                         <span class="text-muted">({{ review.date }})</span>
-                        <p>{{ review.review }}</p>
-                        <small>Rating: {{ review.rating }}/5</small>
+                        <p>{{ review.review|safe }}</p>
+                        <div class="rating-container">
+                           <div class="star-rating">
+                                <span class="star empty">&#9733;</span>
+                                <span class="star empty">&#9733;</span>
+                                <span class="star empty">&#9733;</span>
+                                <span class="star empty">&#9733;</span>
+                                <span class="star empty">&#9733;</span>
+                           </div>
+                           <span class="rating-value">{{ recipe.rating }}</span><span>/5</span>
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
@@ -65,7 +102,24 @@
 <!-- Include Chart.js library -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
+<script src="{% static 'js/star_rating.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const item = document.querySelectorAll('.list-group-item.star-list');
+        item.forEach(container => {
+            // Parse the rating and round it to two decimal places
+            let rating = parseInt(container.dataset.rating);
+            rating = Math.round(rating * 100) / 100;
+            
+            // Update the star rating display
+            const starRatingElement = container.querySelector('.star-rating');
+            viewStars(starRatingElement, rating);
+
+            // Update the rating display next to the stars
+            const ratingValueElement = container.querySelector('.rating-value');
+            ratingValueElement.textContent = rating.toFixed(2); // Set the rounded rating value
+        });
+    });
 
     // Convert the Django context variables to JavaScript
     const labels = {{ sentiment_list|safe }};
