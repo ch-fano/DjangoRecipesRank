@@ -65,5 +65,5 @@ if __name__ == "__main__":
     ReadReview(dump_rating=True)
     clear_dataset(min_num_review=7, max_num_review=70)  # delete the recipes with less than min_num_review and more than max_num_review
     Index(force_build_index=True)
-    ReviewsIndex(force_build_index=True)
+    ReviewsIndex(force_build_index=False)
 

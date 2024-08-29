@@ -22,6 +22,9 @@ class ReviewsIndex:
         with open('./SearchEngine/config.yaml', 'r') as file:
             self.config_data = yaml.safe_load(file)
 
+        with open('./SearchEngine/dataset/review.pkl', 'rb') as file:
+            self.review_dict = pickle.load(file)
+
         path = f"./{self.config_data['INDEX']['SENTIMENT']}"
         if not os.path.exists(path) or force_build_index:
             self.setupReviewDB()
@@ -36,14 +39,11 @@ class ReviewsIndex:
 
         sentiment = ExtractEmotions()
 
-        with open('./SearchEngine/dataset/review.pkl', 'rb') as file:
-            review_dict = pickle.load(file)
-
         sentiment_dict = dict()
-        tot_recipes = len(review_dict)
+        tot_recipes = len(self.review_dict)
 
         with ProcessPoolExecutor() as executor:
-            futures = {executor.submit(process_reviews, recipe_id, list_reviews, SENTIMENTS, sentiment): recipe_id for recipe_id, list_reviews in review_dict.items()}
+            futures = {executor.submit(process_reviews, recipe_id, list_reviews, SENTIMENTS, sentiment): recipe_id for recipe_id, list_reviews in self.review_dict.items()}
             for future in tqdm(as_completed(futures), total=tot_recipes, desc="Indexing Recipes"):
                 recipe_id, sentiments = future.result()
                 sentiment_dict[recipe_id] = sentiments
@@ -56,12 +56,8 @@ class ReviewsIndex:
     def get_sentiments(self, recipe_id):
         return self.index.get(recipe_id)
 
-    def get_sentiment_len_for(self, key):
-        with open('./SearchEngine/dataset/review.pkl', 'rb') as file:
-            review_dict = pickle.load(file)
-
-        return len(review_dict[int(key)])
-        #return self.index.get(int(key))[1]
+    def get_sentiment_len_for(self, recipe_id):
+        return len(self.review_dict[recipe_id])
 
 
 if __name__ == "__main__":

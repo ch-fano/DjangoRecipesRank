@@ -2,31 +2,77 @@
 
 {% block content %}
 <div class="container my-5">
-        <h1 class="display-4">{{ recipe.recipe_name }}</h1>
-        <p class="lead">{{ recipe.description }}</p>
+    <h1 class="display-4">{{ recipe.recipe_name }}</h1>
+    <p class="lead">{{ recipe.description }}</p>
 
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Ingredients ({{ recipe.n_ingredients }})</h3>
-                <ul class="list-group">
-                    {% with recipe.ingredients as ingredients %}
-                        {% for ingredient in ingredients %}
-                            <li class="list-group-item">{{ ingredient }}</li>
-                        {% endfor %}
-                    {% endwith %}
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <h3>Preparation Time</h3>
-                <p>{{ recipe.prep_time }} minutes</p>
+    <!-- Preparation Time directly below the description -->
+    <h3>Preparation Time</h3>
+    <p>{{ recipe.prep_time }} minutes</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Ingredients ({{ recipe.n_ingredients }})</h3>
+            <ul class="list-group">
+                {% with recipe.ingredients as ingredients %}
+                    {% for ingredient in ingredients %}
+                        <li class="list-group-item">{{ ingredient }}</li>
+                    {% endfor %}
+                {% endwith %}
+            </ul>
+        </div>
+
+        <!-- Radar Chart Section -->
+        <div class="col-md-6">
+            <h3>Mean Sentiment Score</h3><h6>(based on this recipe's reviews)</h6>
+            <div style="width: 100%; max-width: 400px; margin: auto;">
+                <canvas id="radarChart" width="300" height="300"></canvas>
             </div>
         </div>
-        <div style="padding: 0.5rem;"></div>
-        <h3>Steps ({{ recipe.n_steps }})</h3>
-        <ol>
-            {% for step in recipe.steps %}
-                <li>{{ step }}</li>
-            {% endfor %}
-        </ol>
     </div>
+
+    <div style="padding: 0.5rem;"></div>
+    <h3>Steps ({{ recipe.n_steps }})</h3>
+    <ol>
+        {% for step in recipe.steps %}
+            <li>{{ step }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<!-- Include Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Convert the Django context variables to JavaScript
+    const labels = {{ sentiment_list|safe }};
+    const data = {{ sentiment_vector|safe }};
+
+    // Create the radar chart using Chart.js
+    const ctx = document.getElementById('radarChart').getContext('2d');
+    const radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: 'rgba(255,194,82,0.48)',
+                borderColor: 'rgb(255,207,107)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scale: {
+                ticks: {
+                    beginAtZero: true,
+                    max: 10
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false  // This hides the legend (label)
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}

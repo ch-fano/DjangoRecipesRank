@@ -3,11 +3,6 @@ import ast
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.conf import settings
-from whoosh.qparser import QueryParser
-
-from SearchEngine.controller import Controller
-from SearchEngine.model import IRModel
-from SearchEngine.sentiment.sentiment_model import SentimentModelWA
 from .forms import SearchForm
 
 # download the dataset only one time
@@ -53,9 +48,12 @@ def get_result(request):
 
     return redirect(get_home)
 
+
 def recipe_detail(request, recipe_id):
     ctx = {}
     index = getattr(settings, 'INDEX', None)
+    review_dict = getattr(settings, 'REVIEW_DICT', None)
+    sentiment_index = getattr(settings, 'SENTIMENT_INDEX', None)
 
     with index.index.searcher() as searcher:
         document = searcher.document(recipe_id=recipe_id)
@@ -63,14 +61,15 @@ def recipe_detail(request, recipe_id):
             document['ingredients'] = ast.literal_eval(document.get("ingredients", '[]'))
             document['steps'] = ast.literal_eval(document.get("steps", '[]'))
             ctx['recipe'] = document
-    # with index.searcher() as searcher:
-    #     query_parser = QueryParser("recipe_id", schema=index.schema)
-    #     query = query_parser.parse(recipe_id)
-    #
-    #     results = searcher.search(query, limit=1)
-    #
-    #     if len(results) > 0:
-    #         doc = results[0]
-    #         ctx['recipe'] = doc
+            ctx['reviews'] = review_dict[recipe_id] if review_dict else []
+
+            if sentiment_index:
+                ctx['sentiment_list'] = sorted(sentiment_index.index[recipe_id].keys())
+                ctx['sentiment_vector'] = [sentiment_index.index[recipe_id][sentiment] for sentiment in ctx['sentiment_list']]
+                print(ctx['sentiment_vector'])
+                print(ctx['sentiment_list'])
+            else:
+                ctx['sentiment_list'] = None
+                ctx['sentiment_vector'] = []
 
     return render(request, 'detail.html', ctx)

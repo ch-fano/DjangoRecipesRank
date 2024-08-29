@@ -16,7 +16,8 @@ from pathlib import Path
 from SearchEngine.controller import Controller
 from SearchEngine.index import Index
 from SearchEngine.model import IRModel
-from SearchEngine.sentiment.sentiment_model import SentimentModelWA
+from SearchEngine.sentiment.sentiment_model import SentimentModelWA, SentimentModelARWA
+from SearchEngine.sentiment.reviews import ReviewsIndex
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,7 +143,10 @@ except Exception:
     REVIEW_DICT = None
     raise Exception('Execute review.py first')
 
+
 INDEX = Index()
+SENTIMENT_INDEX = ReviewsIndex()
 BASE_MODEL = IRModel(INDEX)
-SENTIMENT_MODEL = IRModel(INDEX, SentimentModelWA())
+SENTIMENT_MODEL = IRModel(INDEX, SentimentModelWA(SENTIMENT_INDEX))
+SENTIMENT_REVIEW_MODEL = IRModel(INDEX, SentimentModelARWA(SENTIMENT_INDEX))
 CONTROLLER = Controller(INDEX)

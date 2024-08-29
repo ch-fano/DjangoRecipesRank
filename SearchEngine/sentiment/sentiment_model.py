@@ -4,10 +4,10 @@ from SearchEngine.sentiment.reviews import ReviewsIndex
 
 
 class SentimentModelWA(BM25F):  # Sentiment Model Weighted Average
-    def __init__(self, *args, **kwargs):
+    def __init__(self, sentiment_index=ReviewsIndex(), *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user_sentiment = None
-        self.reviews_index = ReviewsIndex()
+        self.reviews_index = sentiment_index
         self.use_final = True
 
     @staticmethod
@@ -47,13 +47,11 @@ class SentimentModelWA(BM25F):  # Sentiment Model Weighted Average
 
         score = super().final(searcher, docnum, score)
 
-        print('sono in final')
         if not self.user_sentiment:
             return score
 
         id = searcher.stored_fields(docnum)['recipe_id']
         sentiment_score = self.get_sentiment_score(id, self.user_sentiment)
-        print('sentiment score is: ' + str(sentiment_score))
         return ((score / 30 * 70) + (sentiment_score * 30)) / 2
 
 

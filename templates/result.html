@@ -8,17 +8,27 @@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                 {% for recipe in recipes %}
                     <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <a href="{% url 'detail' recipe.id %}"><h5 class="card-title">{{ recipe.name }}</h5></a>
-                                <div class="card-text"> 
-                                    <ul>
-                                        <li>Steps: {{ recipe.n_steps }}</li>
-                                        <li>Time: {{ recipe.prep_time }}</li>
-                                    </ul>
+                        <!-- Make the entire card clickable -->
+                        <a href="{% url 'detail' recipe.id %}" class="text-decoration-none text-dark">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ recipe.name }}</h5>
+                                    <div class="card-text"> 
+                                        <ul>
+                                            <li>Steps: {{ recipe.n_steps }}</li>
+                                            <li>Time: {{ recipe.prep_time }}</li>
+                                        </ul>
+                                       <div class="star-rating">
+                                            <span class="star empty">&#9733;</span>
+                                            <span class="star empty">&#9733;</span>
+                                            <span class="star empty">&#9733;</span>
+                                            <span class="star empty">&#9733;</span>
+                                            <span class="star empty">&#9733;</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 {% endfor %}
             </div>
