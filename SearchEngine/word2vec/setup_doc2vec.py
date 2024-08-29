@@ -28,15 +28,16 @@ def word2vec_creation():
     # train the Doc2vec model
     model = Doc2Vec(vector_size=50,
                     min_count=1, epochs=100, workers=8)
-    
+    print('building vocab')
     model.build_vocab(tagged_docs)
-    
+    print('training')
     model.train(tagged_docs,
                 total_examples=model.corpus_count,
                 epochs=model.epochs)
-
-    model.save(f'./{config_data["WORD2VEC"]["DATADIR"]}/word2vec.model')
-    print("Model created and stored succesfully!")
+    print('training done, now saving')
+    with open('./SearchEngine/word2vec/word2vec.model','wb') as model_file:
+        model.save(model_file)
+        print("Model created and stored succesfully!")
 
 
 def to_json():
@@ -68,7 +69,7 @@ if __name__ == "__main__":
         if not os.path.exists(f'./{config_data["WORD2VEC"]["DATADIR"]}/word2vec.model'):
             word2vec_creation()
     except FileExistsError:
-        pass 
+        pass
     try:
         if not os.path.exists(f'./{config_data["WORD2VEC"]["DATADIR"]}/word_vectors.json'):
             to_json()
