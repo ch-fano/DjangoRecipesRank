@@ -4,3 +4,6 @@ INDEX:
 
 DATA:
     DATADIR: ./SearchEngine/dataset
+
+WORD2VEC:
+    DATADIR: word2vec

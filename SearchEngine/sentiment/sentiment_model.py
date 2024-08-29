@@ -56,7 +56,7 @@ class SentimentModelWA(BM25F):  # Sentiment Model Weighted Average
 
 
 class SentimentModelARWA(SentimentModelWA):  # Sentiment Model Amount Review - Weighted Average
-    '''
+    '''.
     Modello che differisce dal primo poichè premia i documenti con più recensioni penalizzando
     pesantemente quelli che ne hanno poche. 
     '''
