@@ -65,7 +65,7 @@ class SentimentModelARWA(SentimentModelWA):  # Sentiment Model Amount Review - W
         score = super().final(searcher, docnum, score)
         if not self.user_sentiment:
             return score
-        id = searcher.stored_fields(docnum)['id']
+        id = searcher.stored_fields(docnum)['recipe_id']
         sentiment_score = self.get_sentiment_score(id, self.user_sentiment)
 
         return ((score / 30 * 70) + (sentiment_score * 20) + (self.reviews_index.get_sentiment_len_for(id) * 10)) / 3

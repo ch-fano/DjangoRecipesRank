@@ -9,8 +9,12 @@
 
         <div class="text-search-container">
             {{ form.text_search }}
-            <label for="id_use_sentiment" class="sentiment-label">{{ form.use_sentiment.label }}</label>
-            {{ form.use_sentiment }}
+
+            <div style="margin-left: 1rem">
+                <strong><label for="{{ form.selected_model.id_for_label }}">{{ form.selected_model.label }}</label></strong>
+                {{ form.selected_model }}
+            </div>
+
         </div>
 
         <div class="sentiments-container">
@@ -313,11 +317,11 @@
     });
 
     document.addEventListener('DOMContentLoaded', function () {
-        const useSentimentCheckbox = document.getElementById('id_use_sentiment');
+        const useSentimentSelector = document.getElementById('id_selected_model');
         const sentimentsContainer = document.querySelector('.sentiments-container');
-
+        
         function toggleSentimentsContainer() {
-            if (useSentimentCheckbox.checked) {
+            if (useSentimentSelector.value !== 'BM25') {
                 sentimentsContainer.style.display = 'block';
             } else {
                 sentimentsContainer.style.display = 'none';
@@ -326,7 +330,7 @@
 
         toggleSentimentsContainer();
 
-        useSentimentCheckbox.addEventListener('change', toggleSentimentsContainer);
+        useSentimentSelector.addEventListener('change', toggleSentimentsContainer);
     });
 </script>
 {% endblock %}

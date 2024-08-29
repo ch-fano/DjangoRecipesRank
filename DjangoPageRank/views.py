@@ -3,6 +3,8 @@ import ast
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.conf import settings
+
+from .enums import Enums
 from .forms import SearchForm
 
 # download the dataset only one time
@@ -18,7 +20,6 @@ def get_result(request):
     form = SearchForm(request.POST)
     if form.is_valid():
         cleaned_data = form.cleaned_data
-        ctx = {}
         ctx = {
              'text_search': cleaned_data.get('text_search', ''),
              'n_steps_min': cleaned_data.get('n_steps_min', ''),
@@ -33,8 +34,11 @@ def get_result(request):
         }
         print(ctx)
         controller = getattr(settings, 'CONTROLLER', None)
-        if cleaned_data['use_sentiment']:
+
+        if cleaned_data['selected_model'] == Enums.Model.SENTIMENT:
             model = getattr(settings, 'SENTIMENT_MODEL', None)
+        elif cleaned_data['selected_model'] == Enums.Model.SENTIMET_AVG:
+            model = getattr(settings, 'SENTIMENT_REVIEW_MODEL', None)
         else:
             model = getattr(settings, 'BASE_MODEL', None)
 

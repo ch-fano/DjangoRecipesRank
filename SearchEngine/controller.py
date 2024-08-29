@@ -1,5 +1,6 @@
 from whoosh.scoring import BM25F
 
+from DjangoPageRank.enums import Enums
 from SearchEngine.index import Index
 from SearchEngine.model import IRModel
 
@@ -13,7 +14,7 @@ class Controller:
 
     def search(self):
         print(f"model in use is: {(self.search_model.model)}")
-        if not self.data['use_sentiment'] and isinstance(self.search_model.model, BM25F):
+        if self.data['selected_model'] == Enums.Model.BM25 and isinstance(self.search_model.model, BM25F):
             # indexing model
             recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']))
         else:

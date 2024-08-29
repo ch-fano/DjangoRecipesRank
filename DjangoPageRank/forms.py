@@ -1,5 +1,7 @@
 from django import forms
 
+from DjangoPageRank.enums import Enums
+
 
 class SearchForm(forms.Form):
     text_search = forms.CharField(
@@ -61,10 +63,17 @@ class SearchForm(forms.Form):
         widget=forms.NumberInput(attrs={'type': 'range', 'min': '1', 'max': '20', 'value': '20'})
     )
 
-    use_sentiment = forms.BooleanField(
-        label="Sentiment",
+    # use_sentiment = forms.BooleanField(
+    #     label="Sentiment",
+    #     required=False,
+    #     widget=forms.CheckboxInput()
+    # )
+
+    selected_model = forms.ChoiceField(
+        label="Choose Model",
         required=False,
-        widget=forms.CheckboxInput()
+        choices=Enums.Model.choices,
+        widget=forms.Select()
     )
 
     chosen_sentiments = forms.MultipleChoiceField(
