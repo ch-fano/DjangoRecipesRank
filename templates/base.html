@@ -60,6 +60,56 @@
             width: 30px;
             height: 30px;
         }
+        
+        .star-rating {
+            display: inline-block;
+            font-size: 2em;
+            color: #ccc;
+            margin-top: 10px;
+        }
+
+        .star {
+            position: relative;
+            display: inline-block;
+            width: 1em;
+            overflow: hidden;
+        }
+
+        .star.full {
+            color: #f39c12;
+        }
+
+        .star.half::before,
+        .star.quarter::before,
+        .star.three-quarters::before {
+            content: '\2605';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            overflow: hidden;
+            color: #f39c12;
+        }
+
+        .star.quarter::before {
+            width: 35%;              /* Set to 35% instead of 25% for a better visualization*/
+        }
+
+        .star.half::before {
+            width: 45%;              /* Set to 45% instead of 50% for a better visualization*/
+        }
+
+        .star.three-quarters::before {
+            width: 55%;               /* Set to 55% instead of 75% for a better visualization*/
+        }
+
+        .star.empty {
+            color: #ccc;
+        }
+        .star-rating span {
+            font-size: 1.2em;
+            line-height: 1.2em;
+        }
     </style>
 </head>
 <body>

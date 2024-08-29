@@ -32,7 +32,7 @@ def get_result(request):
              'n_ingredients_max': cleaned_data.get('n_ingredients_max', ''),
         }
         print(ctx)
-        controller = getattr(settings,'CONTROLLER', None)
+        controller = getattr(settings, 'CONTROLLER', None)
         if cleaned_data['use_sentiment']:
             model = getattr(settings, 'SENTIMENT_MODEL', None)
         else:

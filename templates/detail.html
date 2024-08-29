@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% block content %}
 <div class="container my-5">
     <h1 class="display-4">{{ recipe.recipe_name }}</h1>
@@ -37,12 +38,35 @@
             <li>{{ step }}</li>
         {% endfor %}
     </ol>
+
+    <!-- Divider -->
+    <div style="padding: 1.5rem;"></div>
+
+    <!-- Reviews Section -->
+    <h3>Reviews</h3>
+    <div>
+        {% if reviews %}
+            <ul class="list-group">
+                {% for review in reviews %}
+                    <li class="list-group-item" data-rating="{{ review.rating}}">
+                        <strong>{{ review.user }}</strong>
+                        <span class="text-muted">({{ review.date }})</span>
+                        <p>{{ review.review }}</p>
+                        <small>Rating: {{ review.rating }}/5</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No reviews on this one.</p>
+        {% endif %}
+    </div>
 </div>
 
 <!-- Include Chart.js library -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
+    <script>
+
     // Convert the Django context variables to JavaScript
     const labels = {{ sentiment_list|safe }};
     const data = {{ sentiment_vector|safe }};
