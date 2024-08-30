@@ -23,7 +23,7 @@
                 {% for value, label in form.chosen_sentiments.field.choices %}
                 <div class="sentiment-checkbox">
                     <input type="checkbox" name="{{ form.chosen_sentiments.name }}" value="{{ value }}"
-                        id="id_chosen_sentiments_{{ forloop.counter }}" 
+                        id="id_chosen_sentiments_{{ forloop.counter }}"
                         {% if value in form.chosen_sentiments.value %} checked {% endif %}>
                     <label for="id_chosen_sentiments_{{ forloop.counter }}">{{ label }}</label>
                 </div>
@@ -147,7 +147,7 @@
     }
 
     .search-box button:hover {
-        background-color: #45ao49;
+        background-color: #45a049;
     }
 
     .number-of-results-container {
@@ -268,6 +268,16 @@
             theme: 'classic'  // Puoi cambiare il tema qui
         });
 
+        // Funzione per mostrare/nascondere il contenitore dei sentimenti
+        function toggleSentimentsContainer() {
+            if ($('#id_selected_model').val() === 'SE' || $('#id_selected_model').val() === 'RSE') {
+                $('#sentiments-container').show();
+            }
+            else {
+                $('#sentiments-container').hide();
+            }
+        }
+
         $("#n_steps_slider").slider({
             range: true,
             min: 1,
@@ -320,6 +330,24 @@
             }
         });
     });
+    
+    document.addEventListener('DOMContentLoaded', function () {
+            const star1Input = document.getElementById('star1');
+            const star0Input = document.getElementById('star0');
+            const star1Label = document.querySelector('label[for="star1"]');
+
+            star1Label.addEventListener('click', function (event) {
+                // If the first star is already selected
+                if (star1Input.checked) {
+                    // Prevent the default behavior of the label click
+                    event.preventDefault();
+                    // Deselect the first star by selecting the hidden 0-star input
+                    star0Input.checked = true;
+                    // Trigger change event to update form state
+                    star0Input.dispatchEvent(new Event('change'));
+                }
+            });
+        });
 </script>
 
 {% endblock %}

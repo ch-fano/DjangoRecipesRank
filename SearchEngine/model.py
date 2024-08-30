@@ -4,6 +4,7 @@ from whoosh.scoring import WeightingModel
 from whoosh.scoring import BM25F
 
 from SearchEngine.sentiment.sentiment_model import SentimentModelWA
+from SearchEngine.word2vec.doc2vec_model import Doc2VecModel
 
 
 class Recipe:
@@ -36,8 +37,8 @@ class IRModel:
         try:
             if isinstance(self.model, SentimentModelWA):
                 self.model.set_user_sentiment(sentiments)
-            # elif isinstance(self.model, Doc2VecModel):
-            #     self.model.set_query(query)
+            elif isinstance(self.model, Doc2VecModel):
+                 self.model.set_query(query)
 
             s = self.index.index.searcher(weighting=self.model)
             qp = qparser.MultifieldParser(['recipe_name', 'description', 'ingredients'], schema=self.index.schema, group=qparser.OrGroup)

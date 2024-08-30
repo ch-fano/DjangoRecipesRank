@@ -36,5 +36,4 @@ class Doc2VecModel(BM25F):
     def final(self, searcher, docnum, score):
         id = searcher.stored_fields(docnum)['recipe_id'] # maybe recipe_id (or id)
         doc2vec_score = get_doc2vec_score(id, self.query, self.docs, self.model)
-
         return score * doc2vec_score
