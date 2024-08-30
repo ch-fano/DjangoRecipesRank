@@ -5,3 +5,4 @@ class Enums:
         BM25 = 'BM25', 'BM25'
         SENTIMENT = 'SE', 'Sentiment'
         SENTIMET_AVG = 'RSE', 'Amounted Review Sentiment'
+        WORD2VEC = 'W2V', 'Word2Vec'

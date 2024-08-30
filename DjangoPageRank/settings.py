@@ -18,6 +18,7 @@ from SearchEngine.index import Index
 from SearchEngine.model import IRModel
 from SearchEngine.sentiment.sentiment_model import SentimentModelWA, SentimentModelARWA
 from SearchEngine.sentiment.reviews import ReviewsIndex
+from SearchEngine.word2vec.doc2vec_model import Doc2VecModel
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -149,4 +150,5 @@ SENTIMENT_INDEX = ReviewsIndex()
 BASE_MODEL = IRModel(INDEX)
 SENTIMENT_MODEL = IRModel(INDEX, SentimentModelWA(SENTIMENT_INDEX))
 SENTIMENT_REVIEW_MODEL = IRModel(INDEX, SentimentModelARWA(SENTIMENT_INDEX))
+WORD2VEC_MODEL = Doc2VecModel()
 CONTROLLER = Controller(INDEX)
