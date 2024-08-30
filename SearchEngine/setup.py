@@ -7,6 +7,7 @@ from SearchEngine.index import Index
 from SearchEngine.review import ReadReview
 from SearchEngine.clear_dataset import clear_dataset
 from SearchEngine.sentiment.reviews import ReviewsIndex
+from SearchEngine.word2vec.setup_doc2vec import setup_word2vec
 
 
 def load_api_key(api_key_file):
@@ -66,4 +67,5 @@ if __name__ == "__main__":
     clear_dataset(min_num_review=7, max_num_review=70)  # delete the recipes with less than min_num_review and more than max_num_review
     Index(force_build_index=True)
     ReviewsIndex(force_build_index=False)
+    setup_word2vec()
 

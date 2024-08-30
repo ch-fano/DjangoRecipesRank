@@ -60,11 +60,10 @@ def to_json():
         json.dump(serializable_docs_vector, json_file)  
     print("Json created and stored successfully!")
     
-    
-if __name__ == "__main__":
-    with open('./SearchEngine/config.yaml','r') as file:
+def setup_word2vec():
+    with open('./SearchEngine/config.yaml', 'r') as file:
         config_data = yaml.safe_load(file)
-        
+
     try:
         if not os.path.exists(f'./{config_data["WORD2VEC"]["DATADIR"]}/word2vec.model'):
             word2vec_creation()
@@ -75,3 +74,6 @@ if __name__ == "__main__":
             to_json()
     except FileExistsError:
         pass
+
+if __name__ == "__main__":
+    setup_word2vec()
