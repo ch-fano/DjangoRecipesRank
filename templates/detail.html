@@ -21,10 +21,19 @@
             margin-left: 10px;
             color: #333;
         }
+        
+        .back-button {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            padding: 10px 20px;
+            z-index: 10;
+        }
     </style>
     
     
 <div class="container my-5">
+    <input type="button" value="← Back" onClick="history.go(-1);" class="btn-custom back-button">
     <h1 class="display-4">{{ recipe.recipe_name }}</h1>
     <p class="lead">{{ recipe.description }}</p>
 

@@ -27,21 +27,19 @@
     <div class="row">
         <div class="col">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                {% for recipe in recipes %}
+                {% for recipe in page_obj %}
                     <div class="col">
-                        <!-- Make the entire card clickable -->
                         <a href="{% url 'detail' recipe.id %}" class="text-decoration-none text-dark">
                             <div class="card h-100">
                                 <div class="card-body" data-rating="{{ recipe.rating }}">
                                     <h5 class="card-title">{{ recipe.name }}</h5>
-                                    <div class="card-text"> 
+                                    <div class="card-text">
                                         <ul>
                                             <li>Steps: {{ recipe.n_steps }}</li>
                                             <li>Preparation time: {{ recipe.prep_time }}</li>
                                             <li>Published: {{ recipe.date }}</li>
                                             <li>Number of ingredients: {{ recipe.n_ingredients }}</li>
                                         </ul>
-                                       <!-- Star rating with aligned value -->
                                        <div class="rating-container">
                                            <div class="star-rating">
                                                 <span class="star empty">&#9733;</span>
@@ -62,20 +60,55 @@
         </div>
     </div>
 
+<!-- Pagination controls -->
+<nav aria-label="Page navigation" style="padding-top: 20px;">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous" style="background-color: #4CAF50; color: white;">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true" style="background-color: #4CAF50; color: white;">&laquo;</span>
+            </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link" style="background-color: #4CAF50; color: white;">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}" style="background-color: #4CAF50; color: white;">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next" style="background-color: #4CAF50; color: white;">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true" style="background-color: #4CAF50; color: white;">&raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+
     <script src="{% static 'js/star_rating.js' %}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const cardBody = document.querySelectorAll('.card-body');
             cardBody.forEach(container => {
-                // Parse the rating and round it to two decimal places
                 let rating = parseFloat(container.dataset.rating);
                 rating = Math.round(rating * 100) / 100;
 
-                // Update the star rating display
                 const starRatingElement = container.querySelector('.star-rating');
                 viewStars(starRatingElement, rating);
 
-                // Update the rating display next to the stars
                 const ratingValueElement = container.querySelector('.rating-value');
                 ratingValueElement.textContent = rating.toFixed(2); 
             });

@@ -93,6 +93,6 @@ class SearchForm(forms.Form):
 
     number_of_results = forms.ChoiceField(
         label="Number of Results",
-        choices=[(5, "5"), (10, "10"), (15, "15"), (20, "20"), (25, "25")],
+        choices=[(10, "10"), (15, "15"), (20, "20"), (25, "25"), (50, "50"), (100, "100")],
         required=False
     )

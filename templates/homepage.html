@@ -269,14 +269,21 @@
         });
 
         // Funzione per mostrare/nascondere il contenitore dei sentimenti
-        function toggleSentimentsContainer() {
-            if ($('#id_selected_model').val() === 'SE' || $('#id_selected_model').val() === 'RSE') {
-                $('#sentiments-container').show();
-            }
-            else {
-                $('#sentiments-container').hide();
-            }
+    function toggleSentimentsContainer() {
+        if ($('#id_selected_model').val() === 'SE' || $('#id_selected_model').val() === 'RSE') {
+            $('.sentiments-container').show(); // Usa la classe, non l'ID
+        } else {
+            $('.sentiments-container').hide();
         }
+    }
+
+    // Esegui la funzione quando la pagina viene caricata
+    toggleSentimentsContainer();
+
+    // Gestire il cambiamento del valore del menu a tendina
+    $('#id_selected_model').change(function() {
+        toggleSentimentsContainer();
+    });
 
         $("#n_steps_slider").slider({
             range: true,
@@ -330,7 +337,7 @@
             }
         });
     });
-    
+
     document.addEventListener('DOMContentLoaded', function () {
             const star1Input = document.getElementById('star1');
             const star0Input = document.getElementById('star0');
