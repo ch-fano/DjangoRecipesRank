@@ -21,7 +21,7 @@
             margin-left: 10px;
             color: #333;
         }
-        
+
         .back-button {
             position: absolute;
             top: 70px;
@@ -49,7 +49,7 @@
             <ul class="list-group">
                 {% with recipe.ingredients as ingredients %}
                     {% for ingredient in ingredients %}
-                        <li class="list-group-item">{{ ingredient }}</li>
+                        <li class="list-group-item">• {{ ingredient }}</li>
                     {% endfor %}
                 {% endwith %}
             </ul>
@@ -71,7 +71,7 @@
         <h3>Steps ({{ recipe.n_steps }})</h3>
         <ul class="list-group">
             {% for step in recipe.steps %}
-                <li class="list-group-item">{{ step }}</li>
+                <li class="list-group-item"><strong>Step {{ forloop.counter }}:</strong> <br>{{ step }}</li>
             {% endfor %}
         </ul>
     </div>

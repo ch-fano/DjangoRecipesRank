@@ -3,24 +3,63 @@
 {% load static %}
 {% block content %}
     <style>
-        .rating-container {
-            display: flex;
-            align-items: center; /* Align stars and rating value vertically */
-            margin-top: 10px;
-        }
+    .rating-container {
+        display: flex;
+        align-items: center; /* Align stars and rating value vertically */
+        margin-top: 10px;
+    }
 
-        .star-rating {
-            font-size: 2em;
-            color: #ccc;
-            display: inline-block;
-        }
+    .star-rating {
+        font-size: 2em;
+        color: #ccc;
+        display: inline-block;
+    }
 
-        .rating-value {
-            font-size: 1.2em;
-            margin-left: 10px;
-            color: #333;
-        }
+    .rating-value {
+        font-size: 1.2em;
+        margin-left: 10px;
+        color: #333;
+    }
+
+    /* Card styles */
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for scale and shadow */
+        border: 1px solid #ddd; /* Light border */
+        border-radius: 8px; /* Rounded corners */
+    }
+
+    /* Hover effect for cards */
+    .card:hover {
+        transform: scale(1.02); /* Scale up the card */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add shadow */
+    }
+
+    /* Style for the selected page */
+    .pagination .page-item.active .page-link {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+        color: white; /* Text color inside the green background */
+    }
+
+    /* Style for other page numbers */
+    .pagination .page-item .page-link {
+        color: black; /* Text color for non-active page numbers */
+    }
+
+    /* Style for the disabled arrow and default arrow */
+    .pagination .page-item.disabled .page-link,
+    .pagination .page-item .page-link span {
+        color: black; /* Color of the arrows */
+    }
+
+    /* Style for hover and focus on pagination links */
+    .pagination .page-item .page-link:hover,
+    .pagination .page-item .page-link:focus {
+        background-color: #f8f9fa; /* Light background on hover */
+        color: black;
+    }
     </style>
+
 
     <h1>Search Results</h1>
     
@@ -32,13 +71,13 @@
                         <a href="{% url 'detail' recipe.id %}" class="text-decoration-none text-dark">
                             <div class="card h-100">
                                 <div class="card-body" data-rating="{{ recipe.rating }}">
+                                    <span class="text-muted" style="align-content: flex-end;">({{ recipe.date }})</span>
                                     <h5 class="card-title">{{ recipe.name }}</h5>
                                     <div class="card-text">
                                         <ul>
                                             <li>Steps: {{ recipe.n_steps }}</li>
-                                            <li>Preparation time: {{ recipe.prep_time }}</li>
-                                            <li>Published: {{ recipe.date }}</li>
                                             <li>Number of ingredients: {{ recipe.n_ingredients }}</li>
+                                            <li>Preparation time: {{ recipe.prep_time }} minutes</li>
                                         </ul>
                                        <div class="rating-container">
                                            <div class="star-rating">
@@ -59,45 +98,45 @@
             </div>
         </div>
     </div>
-
+    
 <!-- Pagination controls -->
 <nav aria-label="Page navigation" style="padding-top: 20px;">
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous" style="background-color: #4CAF50; color: white;">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
         {% else %}
             <li class="page-item disabled">
-                <span class="page-link" aria-hidden="true" style="background-color: #4CAF50; color: white;">&laquo;</span>
+                <span class="page-link" aria-hidden="true">&laquo;</span>
             </li>
         {% endif %}
 
         {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
-                <li class="page-item active"><span class="page-link" style="background-color: #4CAF50; color: white;">{{ num }}</span></li>
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <li class="page-item"><a class="page-link" href="?page={{ num }}" style="background-color: #4CAF50; color: white;">{{ num }}</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next" style="background-color: #4CAF50; color: white;">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         {% else %}
             <li class="page-item disabled">
-                <span class="page-link" aria-hidden="true" style="background-color: #4CAF50; color: white;">&raquo;</span>
+                <span class="page-link" aria-hidden="true">&raquo;</span>
             </li>
         {% endif %}
     </ul>
 </nav>
 
-
+    
     <script src="{% static 'js/star_rating.js' %}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
