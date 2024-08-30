@@ -1,6 +1,6 @@
 from django import forms
 
-from DjangoPageRank.enums import Enums
+from DjangoRecipesRank.enums import Enums
 
 
 class SearchForm(forms.Form):

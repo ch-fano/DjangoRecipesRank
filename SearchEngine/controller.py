@@ -1,6 +1,6 @@
 from whoosh.scoring import BM25F
 
-from DjangoPageRank.enums import Enums
+from DjangoRecipesRank.enums import Enums
 from SearchEngine.index import Index
 from SearchEngine.model import IRModel
 from SearchEngine.word2vec.doc2vec_model import Doc2VecModel
