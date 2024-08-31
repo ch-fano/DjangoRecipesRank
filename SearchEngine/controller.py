@@ -15,7 +15,7 @@ class Controller:
 
     def search(self):
         print(f"model in use is: {(self.search_model.model)}")
-        if self.data['selected_model'] in [Enums.Model.BM25, Enums.Model.WORD2VEC] and (isinstance(self.search_model.model, BM25F) or isinstance(self.search_model.model, Doc2VecModel)):
+        if self.data['selected_model'] in [Enums.Model.BM25F, Enums.Model.WORD2VEC] and (isinstance(self.search_model.model, BM25F) or isinstance(self.search_model.model, Doc2VecModel)):
             # indexing model
             recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']))
         else:
