@@ -5,7 +5,7 @@ from SearchEngine.sentiment.extract_emotions import ExtractEmotions
 import yaml
 import os
 
-from costants import BASE_DIR
+from SearchEngine.constants import BASE_DIR
 
 
 def process_reviews(recipe_id, list_reviews, SENTIMENTS, sentiment):

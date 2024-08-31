@@ -1,7 +1,7 @@
 # constants.py
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 if __name__ == "__main__":
