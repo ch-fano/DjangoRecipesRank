@@ -6,20 +6,20 @@ import csv
 import pickle
 from tqdm import tqdm  # Importa tqdm per la progress bar
 
+from SearchEngine.constants import BASE_DIR, INDEX_DIR, DATASET_DIR
+
 
 class Index:
     def __init__(self, force_build_index=False, limit=None):
         try:
-            with open('./SearchEngine/dataset/rating.pkl', 'rb') as f:
+            rating_dir = os.path.join(BASE_DIR, 'SearchEngine', 'dataset', 'rating.pkl')
+            with open(rating_dir, 'rb') as f:
                 self.rating_dict = pickle.load(f)
         except Exception:
             raise Exception('Execute review.py first')
 
-        with open('./SearchEngine/config.yaml', 'r') as file:
-            config_data = yaml.safe_load(file)
-
-        self.index_dir = f"{config_data['INDEX']['MAINDIR']}"
-        self.data_dir = f"./{config_data['DATA']['DATADIR']}"
+        self.index_dir = INDEX_DIR
+        self.data_dir = DATASET_DIR
 
         self.schema = self.setup_schema()
         self.index = self.setup_index(force_build_index=force_build_index, limit=limit)
@@ -82,7 +82,8 @@ class Index:
 
 
 if __name__ == '__main__':
-    with open('./SearchEngine/dataset/RAW_recipes.csv', 'r', encoding='utf-8') as csvfile:
+    path = os.path.join(DATASET_DIR, 'RAW_recipes.csv')
+    with open(path, 'r', encoding='utf-8') as csvfile:
         r = list(csv.DictReader(csvfile))
         max_minutes=0
         for i, row in enumerate(r):

@@ -4,15 +4,16 @@ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from whoosh.analysis import StandardAnalyzer
 import json, yaml, os, csv
 
+from SearchEngine.constants import DATASET_DIR, WORD2VEC_DIR, WORD2VEC_MODEL, WORD2VEC_JSON
+
+
 # define a list of documents.
 
 def word2vec_creation():
     print('Creating the model...')
     docs=[]
-    with open('./SearchEngine/config.yaml','r') as file:
-        config_data = yaml.safe_load(file)
 
-    csv_file_path = os.path.join(f'./{config_data["DATA"]["DATADIR"]}', 'RAW_recipes_filtered.csv')
+    csv_file_path = os.path.join(DATASET_DIR, 'RAW_recipes_filtered.csv')
 
     with open(csv_file_path, 'r', encoding='utf-8') as csvfile:
         reader = list(csv.DictReader(csvfile))
@@ -35,42 +36,37 @@ def word2vec_creation():
                 total_examples=model.corpus_count,
                 epochs=model.epochs)
     print('training done, now saving')
-    with open('./SearchEngine/word2vec/word2vec.model','wb') as model_file:
+    with open(WORD2VEC_MODEL,'wb') as model_file:
         model.save(model_file)
         print("Model created and stored succesfully!")
 
 
 def to_json():
     print("Creating the json...")
-    with open('./SearchEngine/config.yaml', 'r') as file:
-        config_data = yaml.safe_load(file)
-        
-    model = Doc2Vec.load(f'./{config_data["WORD2VEC"]["DATADIR"]}/word2vec.model')  # load the model
+
+    model = Doc2Vec.load(WORD2VEC_MODEL)  # load the model
     docs_vector = {}
 
-    csv_file_path = os.path.join(f'./{config_data["DATA"]["DATADIR"]}', 'RAW_recipes_filtered.csv')
+    csv_file_path = os.path.join(DATASET_DIR, 'RAW_recipes_filtered.csv')
     with open(csv_file_path, 'r', encoding='utf-8') as csvfile:
         reader = list(csv.DictReader(csvfile))
         for i, row in enumerate(reader):
             docs_vector[row['id']]= model.dv[i]
     
     serializable_docs_vector = {key: value.tolist() for key, value in docs_vector.items()}
-    json_path = f'./{config_data["WORD2VEC"]["DATADIR"]}/word_vectors.json'  # json file path
-    with open(json_path, 'w') as json_file:
+    with open(WORD2VEC_JSON, 'w') as json_file:
         json.dump(serializable_docs_vector, json_file)  
     print("Json created and stored successfully!")
     
 def setup_word2vec():
-    with open('./SearchEngine/config.yaml', 'r') as file:
-        config_data = yaml.safe_load(file)
 
     try:
-        if not os.path.exists(f'./{config_data["WORD2VEC"]["DATADIR"]}/word2vec.model'):
+        if not os.path.exists(WORD2VEC_MODEL):
             word2vec_creation()
     except FileExistsError:
         pass
     try:
-        if not os.path.exists(f'./{config_data["WORD2VEC"]["DATADIR"]}/word_vectors.json'):
+        if not os.path.exists(WORD2VEC_JSON):
             to_json()
     except FileExistsError:
         pass

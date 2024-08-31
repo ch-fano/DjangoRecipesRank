@@ -3,13 +3,14 @@ import yaml
 import csv
 import pickle
 
+from SearchEngine.constants import DATASET_DIR
+
 
 class ReadReview:
     def __init__(self, dump_rating=False):
-        with open('./SearchEngine/config.yaml', 'r') as file:
-            config_data = yaml.safe_load(file)
 
-        self.data_dir = f"{config_data['DATA']['DATADIR']}"
+
+        self.data_dir = DATASET_DIR
 
         self.review_file = 'review.pkl'
         self.rating_file = 'rating.pkl'

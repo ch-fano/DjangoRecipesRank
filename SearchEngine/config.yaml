@@ -7,3 +7,4 @@ DATA:
 
 WORD2VEC:
     DATADIR: ./SearchEngine/word2vec
+

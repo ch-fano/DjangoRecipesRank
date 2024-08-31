@@ -5,7 +5,7 @@ from SearchEngine.sentiment.extract_emotions import ExtractEmotions
 import yaml
 import os
 
-from SearchEngine.constants import BASE_DIR
+from SearchEngine.constants import BASE_DIR, REVIEWS_PATH, SENTIMENT_INDEX_DIR
 
 
 def process_reviews(recipe_id, list_reviews, SENTIMENTS, sentiment):
@@ -21,20 +21,14 @@ def process_reviews(recipe_id, list_reviews, SENTIMENTS, sentiment):
 
 class ReviewsIndex:
     def __init__(self, force_build_index=False):
-        config_path = os.path.join(BASE_DIR, 'SearchEngine' ,'config.yaml')
-        with open(config_path, 'r') as file:
-            self.config_data = yaml.safe_load(file)
 
-        review_path = os.path.join(BASE_DIR, 'SearchEngine' ,'dataset', 'review.pkl')
-
-        with open(review_path, 'rb') as file:
+        with open(REVIEWS_PATH, 'rb') as file:
             self.review_dict = pickle.load(file)
 
-        index_path =os.path.join(BASE_DIR, self.config_data['INDEX']['SENTIMENT'])
-        if not os.path.exists(index_path) or force_build_index:
+        if not os.path.exists(SENTIMENT_INDEX_DIR) or force_build_index:
             self.setupReviewDB()
 
-        with open(index_path, 'rb') as fp:
+        with open(SENTIMENT_INDEX_DIR, 'rb') as fp:
             self.index = pickle.load(fp)
 
     def setupReviewDB(self, index_path):

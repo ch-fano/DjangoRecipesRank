@@ -3,6 +3,7 @@ import os
 import yaml
 from kaggle.api.kaggle_api_extended import KaggleApi
 
+from SearchEngine.constants import DATASET_DIR
 from SearchEngine.index import Index
 from SearchEngine.review import ReadReview
 from SearchEngine.clear_dataset import clear_dataset
@@ -55,10 +56,9 @@ def remove_files(output_path):
 def create_db():
     dataset_url = "shuyangli94/food-com-recipes-and-user-interactions"
 
-    with open('./SearchEngine/config.yaml', 'r') as file:
-        config_data = yaml.safe_load(file)
 
-    download_dataset(dataset_url, f"{config_data['DATA']['DATADIR']}")
+
+    download_dataset(dataset_url, DATASET_DIR)
 
 
 if __name__ == "__main__":
