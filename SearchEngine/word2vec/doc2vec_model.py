@@ -1,9 +1,13 @@
 # This module contains the custom classes for scoring
+import os
+
 from whoosh.scoring import BM25F
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from whoosh.analysis import StandardAnalyzer
 import json
 from sklearn.metrics.pairwise import cosine_similarity
+
+from SearchEngine.constants import BASE_DIR
 
 
 def preprocess_query(query, model: Doc2Vec):
@@ -26,8 +30,10 @@ class Doc2VecModel(BM25F):
 
     def __init__(self):
         super().__init__()
-        self.model = Doc2Vec.load("./SearchEngine/word2vec/word2vec.model")
-        with open("./SearchEngine/word2vec/word_vectors.json", "r") as f:
+        model_path = os.path.join(BASE_DIR, 'word2vec', 'word2vec.model')
+        json_path = os.path.join(BASE_DIR, 'word2vec', 'word_vectors.json')
+        self.model = Doc2Vec.load(model_path)
+        with open(json_path, "r") as f:
             self.docs = json.load(f)
 
     def set_query(self, query):
