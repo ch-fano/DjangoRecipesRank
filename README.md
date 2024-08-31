@@ -94,6 +94,10 @@ The documents are retrieved based on the options selected by these filters:
 - **rating**: The rating associated with the recipe.
 - **review**: The text of the review.
 
+## Benchmarking
+The benchmarking suite is located in `SearchEngine/benchmark`.  
+This folder contains a Python file with all the necessary benchmarking functions, and a Jupyter Notebook that allows to run the tests while showing the results.  
+To run this, just use your favourite IDE with a Jupyter Notebook plugin installed.
  
 ## Authors
 * Christofer Fanò

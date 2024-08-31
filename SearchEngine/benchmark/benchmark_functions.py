@@ -14,7 +14,7 @@ class Benchmark:
         result = my_model.search(query=self.query["query"], res_limit=n_result, sentiments=self.query["sentiments"],
                                     verbose=verbose)
 
-        results = [int(id) for id in result.keys()]
+        results = [int(recipe.id) for recipe in result]
         if verbose:
             print(f'Results: {results}\nRelevant documents: {self.query["relevant_documents"]}')
             print(f'Relevant retrived: {set(results).intersection(set(self.query["relevant_documents"]))}')
