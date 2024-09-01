@@ -1,7 +1,7 @@
 [
   {
         "UIN": "I want to cook some delicious blueberries muffins",
-        "query": "delicious blueberries muffins",
+        "query": " ((recipe_name:delicious OR description:delicious OR ingredients:delicious OR recipe_name:blueberry OR description:blueberry OR ingredients:blueberry OR recipe_name:muffins OR description:muffins OR ingredients:muffins) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31])",
         "sentiments": ["joy"],
         "relevant_documents": [371970, 13923, 214088, 98985, 78892, 86105, 166025, 290078, 65163, 170250, 90135, 375810]
   },
@@ -12,41 +12,62 @@
           "joy",
           "surprise"
         ],
-        "relevant_documents": [
-          431714,
-          146965,
-          104409,
-          155580,
-          85993,
-          30872,
-          353612,
-          155754,
-          409522,
-          18481,
-          406766,
-          338477,
-          34822,
-          369445
-        ]
+        "relevant_documents": [431714, 85993, 155754, 406766, 18481, 409522, 146965, 30872, 104409, 155580, 424933, 369445, 34822]
   },
   {
         "UIN": "I went to my neighbor's house for lunch and they served me some amazing garlic bread, i want to make it too! Over 4 stars rating.",
-        "query": "(amazing garlic bread) AND n_steps:[1 TO 50] AND prep_time:[1 TO 10000] AND rating:[4 TO 5] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]",
+        "query": "(amazing garlic bread) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND rating:[4 TO 5] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]",
         "sentiments": [
           "joy",
           "neutral"
         ],
-        "relevant_documents": [
-          76248,
-          46183,
-          90808,
-          68124,
-          185498,
-          132920,
-          117293,
-          55531,
-          17095,
-          317308
-        ]
+        "relevant_documents": [ 185498, 28419, 87461, 46183, 17095, 90808, 90693, 308361, 94674, 143581, 131648]
+  },
+  {
+        "UIN": "I love spicy food and I'd like to find an easy but outstanding recipe for spicy hot wings. Max 10 ingredients and only recipes from the 2000's",
+        "query": "(spicy hot wings) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[1 TO 10] AND recipe_date:[2000-01-01 TO 2010-12-31]",
+        "sentiments": [
+          "surprise",
+          "neutral"
+        ],
+        "relevant_documents": [351013, 15021, 69201, 275989, 234329, 27995, 120413, 27200, 411938, 47179, 153150, 79618]
+  },
+  {
+        "UIN": "I have a date tonight and I want to surprise my fiancée with some elaborated and tasteful mexican recipe. Minimum 10 ingredients. Oh, and he's vegetarian",
+        "query": "((recipe_name:vegetarian OR description:vegetarian OR ingredients:vegetarian OR recipe_name:tex OR recipe_name:mex OR description:tex OR description:mex OR ingredients:tex OR ingredients:mex OR recipe_name:mexican OR description:mexican OR ingredients:mexican) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[10 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31])",
+
+        "sentiments": [
+          "joy",
+          "neutral"
+        ],
+        "relevant_documents": [81890, 61541, 475819, 64465, 18546, 32670, 230740, 49461, 426628, 210692, 53495]
+  },
+  {
+        "UIN": "Yesterday I burned my tongue, I want to cook pasta that's not really tasty",
+        "query": "(tasteless pasta) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]",
+        "sentiments": [
+          "disgust",
+          "anger",
+          "sadness"
+        ],
+        "relevant_documents": [11402, 55679, 8534, 23049, 69217, 456164, 500714, 360549, 82789, 61851, 32670, 128829]
+  },
+  {
+        "UIN": "I'm moroccan and i live abroad... I miss my country! Help me make a wonderful chicken tagine that will cheer me up! Long prep time, I'm not in a rush and I want it really tender.",
+        "query": "((recipe_name:moroccan OR description:moroccan OR ingredients:moroccan OR recipe_name:chicken OR description:chicken OR ingredients:chicken OR recipe_name:tagine OR description:tagine OR ingredients:tagine) AND n_steps:[1 TO 50] AND prep_time:[90 TO 300] AND rating:[4.0 TO 5.0] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31])",
+        "sentiments": [
+          "joy",
+          "surprise"
+        ],
+        "relevant_documents": [191643,265530, 191643, 167757, 133516, 67627, 140868, 290839, 209859, 292393]
+  },
+  {
+        "UIN": "I want to cook an elaborated chocolate cake, but I have less than 3 hours to complete it. I only want the best rated recipes",
+        "query": "(chocolate cake) AND n_steps:[10 TO 50] AND prep_time:[1 TO 180] AND rating:[5 TO 5] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]\n",
+        "sentiments": [
+          "joy",
+          "surprise"
+        ],
+        "relevant_documents": [27779, 92323, 55843, 86153, 216715, 88625, 164851, 59478, 170616, 31386, 94493, 222107]
   }
 ]
