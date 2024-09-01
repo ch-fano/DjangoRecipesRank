@@ -32,7 +32,7 @@ class Controller:
 
         query = ''
         if self.data.get('text_search', ''):
-            query += self.data.get('text_search')
+            query += f"({self.data.get('text_search')})"
         if self.data.get('n_steps_min', 0) and self.data.get('n_steps_max', 50):
             query += f" AND n_steps:[{int(self.data.get('n_steps_min'))} TO {int(self.data.get('n_steps_max'))}]"
         if self.data.get('prep_time_min', 0) and self.data.get('prep_time_max', 10000):
