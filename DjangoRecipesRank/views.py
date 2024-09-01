@@ -50,7 +50,7 @@ def get_result(request):
             controller.set_model(model)
             controller.set_data(cleaned_data)
             recipes = controller.search()
-
+            print([int(recipe.id) for recipe in recipes])
             paginator = Paginator(recipes, 21)  # 21 ricette per pagina
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
@@ -87,8 +87,8 @@ def get_result(request):
             controller.set_model(model)
             controller.set_data(cleaned_data)
             recipes = controller.search()
-
-            paginator = Paginator(recipes, 20)  # 20 ricette per pagina
+            print([int(recipe.id) for recipe in recipes])
+            paginator = Paginator(recipes, 21)  # 20 ricette per pagina
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
 

@@ -50,9 +50,9 @@
                 <label>Preparation Time (minutes)</label>
                 <div id="prep_time_slider"></div>
                 <span id="prep_time_min_text">1</span> -
-                <span id="prep_time_max_text">10000</span>
+                <span id="prep_time_max_text">300</span>
                 <input type="hidden" name="prep_time_min" id="prep_time_min" value="1">
-                <input type="hidden" name="prep_time_max" id="prep_time_max" value="10000">
+                <input type="hidden" name="prep_time_max" id="prep_time_max" value="300">
             </div>
 
             <div class="filter-item">
@@ -301,8 +301,8 @@
         $("#prep_time_slider").slider({
             range: true,
             min: 1,
-            max: 10000,
-            values: [1, 10000],
+            max: 300,
+            values: [1, 300],
             slide: function(event, ui) {
                 $("#prep_time_min").val(ui.values[0]);
                 $("#prep_time_max").val(ui.values[1]);

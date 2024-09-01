@@ -36,13 +36,13 @@ class SearchForm(forms.Form):
     prep_time_min = forms.IntegerField(
         label="Minimum Preparation Time (minutes)",
         required=False,
-        widget=forms.NumberInput(attrs={'type': 'range', 'min': '1', 'max': '10000', 'value': '1'})
+        widget=forms.NumberInput(attrs={'type': 'range', 'min': '1', 'max': '300', 'value': '1'})
     )
 
     prep_time_max = forms.IntegerField(
         label="Maximum Preparation Time (minutes)",
         required=False,
-        widget=forms.NumberInput(attrs={'type': 'range', 'min': '1', 'max': '10000', 'value': '10000'})
+        widget=forms.NumberInput(attrs={'type': 'range', 'min': '1', 'max': '300', 'value': '300'})
     )
 
     rating = forms.IntegerField(
