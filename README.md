@@ -69,7 +69,7 @@ The documents are retrieved based on the options selected by these filters:
 * **Preparation time**: to select the minimum and maximum minutes needed to complete the recipe.
 * **Number of ingredients**: to select the minimum and maximum number of the recipe's ingredients.
 * **Year range**: to select the minimum and maximum year in which the recipe was inserted into the database.
-* **Minimum score**: to select the minimum score the recipe has to have.
+* **Minimum rating**: to select the minimum rating the recipe has to have (this is computed using an average of all its reviews).
  
 
 ### RAW_recipes.csv
