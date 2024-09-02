@@ -1,17 +1,20 @@
 import csv
 import os
 import pickle
+from SearchEngine.constants import BASE_DIR, DATASET_DIR
 
 
 def read_pickles():
     try:
-        with open('./SearchEngine/dataset/rating.pkl', 'rb') as f:
+        rating_dir = os.path.join(BASE_DIR, 'SearchEngine', 'dataset', 'rating.pkl')
+        with open(rating_dir, 'rb') as f:
             rating_dict = pickle.load(f)
     except Exception:
         raise Exception('Execute read_review.py first')
 
     try:
-        with open('./SearchEngine/dataset/review.pkl', 'rb') as f:
+        review_dir = os.path.join(BASE_DIR, 'SearchEngine', 'dataset', 'review.pkl')
+        with open(review_dir, 'rb') as f:
             review_dict = pickle.load(f)
     except Exception:
         raise Exception('Execute read_review.py first')
@@ -20,10 +23,13 @@ def read_pickles():
 
 
 def write_pickles(rating_dict, review_dict):
-    with open('./SearchEngine/dataset/rating.pkl', 'wb') as f:
+
+    rating_dir = os.path.join(BASE_DIR, 'SearchEngine', 'dataset', 'rating.pkl')
+    with open(rating_dir, 'wb') as f:
         pickle.dump(rating_dict, f)
 
-    with open('./SearchEngine/dataset/review.pkl', 'wb') as f:
+    review_dir = os.path.join(BASE_DIR, 'SearchEngine', 'dataset', 'review.pkl')
+    with open(review_dir, 'wb') as f:
         pickle.dump(review_dict, f)
 
 
@@ -51,11 +57,14 @@ def clear_dataset(min_num_review, max_num_review):
     print('Finished to clear the dataset, remaining recipes: ', len(review_dict), '\nDeleted ', tot_deleted, ' recipes')
 
 def filter_csv_files(valid_ids):
-    # Filter RAW_interactions.csv
-    filter_csv('./SearchEngine/dataset/RAW_interactions.csv', valid_ids, 'recipe_id')
 
-    # Filter RAW_ratings.csv
-    filter_csv('./SearchEngine/dataset/RAW_recipes.csv', valid_ids, 'id')
+    # Filter RAW_interactions.csv
+    interactions_path = os.path.join(DATASET_DIR, 'RAW_interactions.csv')
+    filter_csv(interactions_path, valid_ids, 'recipe_id')
+
+    # Filter RAW_recipes.csv
+    recipes_path = os.path.join(DATASET_DIR, 'RAW_recipes.csv')
+    filter_csv(recipes_path, valid_ids, 'id')
 
 
 def filter_csv(file_path, valid_ids, id_field):

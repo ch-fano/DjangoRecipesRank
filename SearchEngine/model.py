@@ -33,7 +33,6 @@ class IRModel:
 
     def search(self, query: str, res_limit=-1, sentiments=None, verbose=True):
         res_dict = []
-        correctedstring = ''
         try:
             if isinstance(self.model, SentimentModel):
                 self.model.set_user_sentiment(sentiments)

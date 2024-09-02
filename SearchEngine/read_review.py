@@ -7,8 +7,6 @@ from SearchEngine.constants import DATASET_DIR
 
 class ReadReview:
     def __init__(self, dump_rating=False):
-
-
         self.data_dir = DATASET_DIR
 
         self.review_file = 'review.pkl'

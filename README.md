@@ -56,7 +56,7 @@ Not doing this will result in a lot of issues and program will probably **not st
 * ***controller\.py***: file serves as the central hub for interacting with and orchestrating the functionalities of various other files within this software project. 
 * ***index\.py***: this file builds Whoosh's own *schema* and then generates the *index*, which is stored in the *indexdir* directory.
 * ***model\.py***: carry out the actual search function after having appropriately selected the model.
-* ***config\.yaml***: stores configuration settings and parameters for the search-engine. 
+* ***constants\.py***: stores paths for the relevant directories of the search-engine. 
 
  
 ## Query Language

@@ -40,7 +40,7 @@ def get_result(request):
 
             if cleaned_data['selected_model'] == Enums.Model.SENTIMENT:
                 model = getattr(settings, 'SENTIMENT_MODEL', None)
-            elif cleaned_data['selected_model'] == Enums.Model.SENTIMENT_AVG:
+            elif cleaned_data['selected_model'] == Enums.Model.REVIEW_SENTIMENT:
                 model = getattr(settings, 'SENTIMENT_REVIEW_MODEL', None)
             elif cleaned_data['selected_model'] == Enums.Model.WORD2VEC:
                 model = getattr(settings, 'WORD2VEC_MODEL', None)
@@ -77,7 +77,7 @@ def get_result(request):
 
             if cleaned_data['selected_model'] == Enums.Model.SENTIMENT:
                 model = getattr(settings, 'SENTIMENT_MODEL', None)
-            elif cleaned_data['selected_model'] == Enums.Model.SENTIMENT_AVG:
+            elif cleaned_data['selected_model'] == Enums.Model.REVIEW_SENTIMENT:
                 model = getattr(settings, 'SENTIMENT_REVIEW_MODEL', None)
             elif cleaned_data['selected_model'] == Enums.Model.WORD2VEC:
                 model = getattr(settings, 'WORD2VEC_MODEL', None)
