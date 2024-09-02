@@ -54,14 +54,6 @@ class IRModel:
                                            i['recipe_date'], i['prep_time'], i['rating'], i['ingredients'],
                                            i['n_ingredients']))
 
-            # Did you Mean? codice per implementarlo
-            # corrected = s.correct_query(parsedQ, query)
-            # if corrected.query != parsedQ:
-            #     correctedstring = reduce(
-            #         lambda x, y: x + " " + str(y[1]),
-            #         list(filter(lambda term: term[1] if term[0] == "name" else "", corrected.query.iter_all_terms())),
-            #         ""
-            #     ).strip()
         except Exception as e:
             print(e)
         finally:
