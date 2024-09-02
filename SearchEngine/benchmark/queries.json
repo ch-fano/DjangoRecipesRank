@@ -1,7 +1,7 @@
 [
   {
         "UIN": "I want to cook some delicious blueberries muffins",
-        "query": " ((recipe_name:delicious OR description:delicious OR ingredients:delicious OR recipe_name:blueberry OR description:blueberry OR ingredients:blueberry OR recipe_name:muffins OR description:muffins OR ingredients:muffins) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31])",
+        "query": "(delicious blueberry muffins) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]",
         "sentiments": ["joy"],
         "relevant_documents": [371970, 13923, 214088, 98985, 78892, 86105, 166025, 290078, 65163, 170250, 90135, 375810]
   },
@@ -53,7 +53,7 @@
   },
   {
         "UIN": "I'm moroccan and i live abroad... I miss my country! Help me make a wonderful chicken tagine that will cheer me up! Long prep time, I'm not in a rush and I want it really tender.",
-        "query": "((recipe_name:moroccan OR description:moroccan OR ingredients:moroccan OR recipe_name:chicken OR description:chicken OR ingredients:chicken OR recipe_name:tagine OR description:tagine OR ingredients:tagine) AND n_steps:[1 TO 50] AND prep_time:[90 TO 300] AND rating:[4.0 TO 5.0] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31])",
+        "query": "(moroccan chicken tagine) AND n_steps:[1 TO 50] AND prep_time:[90 TO 300] AND rating:[4 TO 5] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]",
         "sentiments": [
           "joy",
           "surprise"
@@ -68,5 +68,22 @@
           "surprise"
         ],
         "relevant_documents": [27779, 92323, 55843, 86153, 216715, 88625, 164851, 59478, 170616, 31386, 94493, 222107]
+  },
+  {
+        "UIN": "Cinema night! I'd really like to cook some garlic french fries as an appetizer.",
+        "query": "(garlic french fries) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[1 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]",
+        "sentiments": [
+          "neutral"
+        ],
+        "relevant_documents": [97763, 195877, 48201, 298575, 149748, 86006, 154267, 258078, 34461, 14208]
+  },
+  {
+        "UIN": "I want a refreshing fruit smoothie with good ratings and at least 5 ingredients",
+        "query": "(refreshing fruit smoothie) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND rating:[4 TO 5] AND n_ingredients:[5 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]",
+        "sentiments": [
+          "joy",
+          "surprise"
+        ],
+        "relevant_documents": [207929, 173466, 162123, 225435, 425452,  151781]
   }
 ]
