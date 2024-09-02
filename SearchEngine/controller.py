@@ -3,7 +3,7 @@ from whoosh.scoring import BM25F
 from DjangoRecipesRank.enums import Enums
 from SearchEngine.index import Index
 from SearchEngine.model import IRModel
-from SearchEngine.word2vec.doc2vec_model import Doc2VecModel
+from SearchEngine.word2vec.word2vec_model import Word2VecModel
 
 
 class Controller:
@@ -14,8 +14,8 @@ class Controller:
         self.data = None
 
     def search(self):
-        print(f"model in use is: {(self.search_model.model)}")
-        if self.data['selected_model'] in [Enums.Model.BM25F, Enums.Model.WORD2VEC] and (isinstance(self.search_model.model, BM25F) or isinstance(self.search_model.model, Doc2VecModel)):
+        print(f"model in use is: {self.search_model.model}")
+        if self.data['selected_model'] in [Enums.Model.BM25F, Enums.Model.WORD2VEC] and (isinstance(self.search_model.model, BM25F) or isinstance(self.search_model.model, Word2VecModel)):
             # indexing model
             recipes = self.search_model.search(query=self.get_query, res_limit=int(self.data['number_of_results']))
         else:

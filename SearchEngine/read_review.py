@@ -1,5 +1,4 @@
 import os
-import yaml
 import csv
 import pickle
 

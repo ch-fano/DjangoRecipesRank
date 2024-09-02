@@ -16,9 +16,9 @@ from pathlib import Path
 from SearchEngine.controller import Controller
 from SearchEngine.index import Index
 from SearchEngine.model import IRModel
-from SearchEngine.sentiment.sentiment_model import SentimentModelWA, SentimentModelARWA
-from SearchEngine.sentiment.reviews import ReviewsIndex
-from SearchEngine.word2vec.doc2vec_model import Doc2VecModel
+from SearchEngine.sentiment.sentiment_model import SentimentModel, ReviewSentimentModel
+from SearchEngine.sentiment.reviews_index import ReviewsIndex
+from SearchEngine.word2vec.word2vec_model import Word2VecModel
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,13 +142,13 @@ try:
         REVIEW_DICT = pickle.load(f)
 except Exception:
     REVIEW_DICT = None
-    raise Exception('Execute review.py first')
+    raise Exception('Execute read_review.py first')
 
 
 INDEX = Index()
 SENTIMENT_INDEX = ReviewsIndex()
 BASE_MODEL = IRModel(INDEX)
-SENTIMENT_MODEL = IRModel(INDEX, SentimentModelWA(SENTIMENT_INDEX))
-SENTIMENT_REVIEW_MODEL = IRModel(INDEX, SentimentModelARWA(SENTIMENT_INDEX))
-WORD2VEC_MODEL = IRModel(INDEX, Doc2VecModel())
+SENTIMENT_MODEL = IRModel(INDEX, SentimentModel(SENTIMENT_INDEX))
+SENTIMENT_REVIEW_MODEL = IRModel(INDEX, ReviewSentimentModel(SENTIMENT_INDEX))
+WORD2VEC_MODEL = IRModel(INDEX, Word2VecModel())
 CONTROLLER = Controller(INDEX)

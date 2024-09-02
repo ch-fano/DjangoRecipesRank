@@ -1,1 +1,1 @@
-__all__ = ["extractEmotions", "reviews", "sentiment"]
+__all__ = ["extractEmotions", "reviews_index.py", "sentiment"]

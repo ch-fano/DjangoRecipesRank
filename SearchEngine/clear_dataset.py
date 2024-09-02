@@ -8,13 +8,13 @@ def read_pickles():
         with open('./SearchEngine/dataset/rating.pkl', 'rb') as f:
             rating_dict = pickle.load(f)
     except Exception:
-        raise Exception('Execute review.py first')
+        raise Exception('Execute read_review.py first')
 
     try:
         with open('./SearchEngine/dataset/review.pkl', 'rb') as f:
             review_dict = pickle.load(f)
     except Exception:
-        raise Exception('Execute review.py first')
+        raise Exception('Execute read_review.py first')
 
     return rating_dict, review_dict
 

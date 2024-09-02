@@ -61,9 +61,9 @@ Not doing this will result in a lot of issues and program will probably **not st
  
 ## Query Language
 
-The project supports **Natural Query Language**. In addition, when ```SentimentModelARWA``` or ```SentimentModelWA``` are selected, a list of convenient *Sentiments* checkboxes will appear, which allows to rank the retrived documents based on *Sentiments* selected first. 
+The project supports **Natural Query Language**. In addition, when ```SentimentModel``` or ```ReviewSentimentModel``` are selected, a list of convenient *Sentiments* checkboxes will appear, which allows to rank the retrived documents based on *Sentiments* selected first. 
 
-The documents are retrieved based on the options selected by these filters:
+The documents are retrieved based on the options selected by these filters:<
 * **Number of results**: to select the number of documents to retrieve.  
 * **Number of steps**: to select the minimum and maximum number of steps. 
 * **Preparation time**: to select the minimum and maximum minutes needed to complete the recipe.

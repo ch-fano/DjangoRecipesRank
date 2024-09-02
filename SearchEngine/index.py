@@ -1,5 +1,4 @@
 import os
-import yaml
 from whoosh.index import create_in, open_dir
 from whoosh.fields import Schema, TEXT, NUMERIC, ID
 import csv
@@ -16,7 +15,7 @@ class Index:
             with open(rating_dir, 'rb') as f:
                 self.rating_dict = pickle.load(f)
         except Exception:
-            raise Exception('Execute review.py first')
+            raise Exception('Execute read_review.py first')
 
         self.index_dir = INDEX_DIR
         self.data_dir = DATASET_DIR

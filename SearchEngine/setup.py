@@ -1,14 +1,13 @@
 import json
 import os
-import yaml
 from kaggle.api.kaggle_api_extended import KaggleApi
 
 from SearchEngine.constants import DATASET_DIR
 from SearchEngine.index import Index
-from SearchEngine.review import ReadReview
+from SearchEngine.read_review import ReadReview
 from SearchEngine.clear_dataset import clear_dataset
-from SearchEngine.sentiment.reviews import ReviewsIndex
-from SearchEngine.word2vec.setup_doc2vec import setup_word2vec
+from SearchEngine.sentiment.reviews_index import ReviewsIndex
+from SearchEngine.word2vec.setup_word2vec import setup_word2vec
 
 
 def load_api_key(api_key_file):

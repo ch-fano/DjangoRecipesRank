@@ -1,9 +1,9 @@
 from whoosh.scoring import BM25F
 import math
-from SearchEngine.sentiment.reviews import ReviewsIndex
+from SearchEngine.sentiment.reviews_index import ReviewsIndex
 
 
-class SentimentModelWA(BM25F):  # Sentiment Model Weighted Average
+class SentimentModel(BM25F):  
     def __init__(self, sentiment_index=ReviewsIndex(), *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user_sentiment = None
@@ -55,10 +55,9 @@ class SentimentModelWA(BM25F):  # Sentiment Model Weighted Average
         return ((score / 30 * 70) + (sentiment_score * 30)) / 2
 
 
-class SentimentModelARWA(SentimentModelWA):  # Sentiment Model Amount Review - Weighted Average
+class ReviewSentimentModel(SentimentModel):
     '''.
-    Modello che differisce dal primo poichè premia i documenti con più recensioni penalizzando
-    pesantemente quelli che ne hanno poche. 
+    Modello che favorisce maggiormente i documenti con più recensioni.
     '''
 
     def final(self, searcher, docnum, score):
@@ -68,4 +67,4 @@ class SentimentModelARWA(SentimentModelWA):  # Sentiment Model Amount Review - W
         id = searcher.stored_fields(docnum)['recipe_id']
         sentiment_score = self.get_sentiment_score(id, self.user_sentiment)
 
-        return ((score / 30 * 70) + (sentiment_score * 29) + (self.reviews_index.get_sentiment_len_for(id))) / 3
+        return ((score / 30 * 70) + (sentiment_score * 29) + (self.reviews_index.get_number_of_reviews(id))) / 3

@@ -2,9 +2,9 @@
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 
 from whoosh.analysis import StandardAnalyzer
-import json, yaml, os, csv
+import json, os, csv
 
-from SearchEngine.constants import DATASET_DIR, WORD2VEC_DIR, WORD2VEC_MODEL, WORD2VEC_JSON
+from SearchEngine.constants import DATASET_DIR, WORD2VEC_MODEL, WORD2VEC_JSON
 
 
 # define a list of documents.
@@ -38,7 +38,7 @@ def word2vec_creation():
     print('training done, now saving')
     with open(WORD2VEC_MODEL,'wb') as model_file:
         model.save(model_file)
-        print("Model created and stored succesfully!")
+        print("Model created and stored successfully!")
 
 
 def to_json():

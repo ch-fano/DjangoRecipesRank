@@ -1,11 +1,10 @@
 import pickle
 from tqdm import tqdm
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from SearchEngine.sentiment.extract_emotions import ExtractEmotions
-import yaml
+from SearchEngine.sentiment.sentiment_classifier import SentimentClassifier
 import os
 
-from SearchEngine.constants import BASE_DIR, REVIEWS_PATH, SENTIMENT_INDEX_DIR
+from SearchEngine.constants import REVIEWS_PATH, SENTIMENT_INDEX_DIR
 
 
 def process_reviews(recipe_id, list_reviews, SENTIMENTS, sentiment):
@@ -26,16 +25,16 @@ class ReviewsIndex:
             self.review_dict = pickle.load(file)
 
         if not os.path.exists(SENTIMENT_INDEX_DIR) or force_build_index:
-            self.setupReviewDB()
+            self.setup_review_db()
 
         with open(SENTIMENT_INDEX_DIR, 'rb') as fp:
             self.index = pickle.load(fp)
 
-    def setupReviewDB(self, index_path):
+    def setup_review_db(self, index_path):
         print("Building reviews pickle file... ")
         SENTIMENTS = ["anger", "disgust", "fear", "joy", "neutral", "sadness", "surprise"]
 
-        sentiment = ExtractEmotions()
+        sentiment = SentimentClassifier()
 
         sentiment_dict = dict()
         tot_recipes = len(self.review_dict)
@@ -55,7 +54,7 @@ class ReviewsIndex:
     def get_sentiments(self, recipe_id):
         return self.index.get(recipe_id)
 
-    def get_sentiment_len_for(self, recipe_id):
+    def get_number_of_reviews(self, recipe_id):
         return len(self.review_dict[recipe_id])
 
 
