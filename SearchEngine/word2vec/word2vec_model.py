@@ -30,7 +30,7 @@ class Word2VecModel(BM25F):
     def __init__(self):
         super().__init__()
         self.model = Doc2Vec.load(WORD2VEC_MODEL)
-        self.query=None
+        self.query = None
         with open(WORD2VEC_JSON, "r") as f:
             self.docs = json.load(f)
 

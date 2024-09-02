@@ -34,8 +34,7 @@
   },
   {
         "UIN": "I have a date tonight and I want to surprise my fiancée with some elaborated and tasteful mexican recipe. Minimum 10 ingredients. Oh, and he's vegetarian",
-        "query": "((recipe_name:vegetarian OR description:vegetarian OR ingredients:vegetarian OR recipe_name:tex OR recipe_name:mex OR description:tex OR description:mex OR ingredients:tex OR ingredients:mex OR recipe_name:mexican OR description:mexican OR ingredients:mexican) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[10 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31])",
-
+        "query":  "(vegetarian tex-mex mexican) AND n_steps:[1 TO 50] AND prep_time:[1 TO 300] AND n_ingredients:[10 TO 20] AND recipe_date:[2000-01-01 TO 2024-12-31]",
         "sentiments": [
           "joy",
           "neutral"
