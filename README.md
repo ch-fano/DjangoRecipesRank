@@ -51,7 +51,7 @@ Not doing this will result in a lot of issues and program will probably **not st
 * ***word2vec***: this package contains the implementation of ```Doc2VecModel```.
 * ***benchmark***: this package contains functions and queries for *benchmarks.ipynb*. 
 * ***indexdir***: directory containing the index files. 
-* ***sentiment***: this package contains the implementation of ```SentimentModelARWA``` and ```SentimentModelWA```, two slightly different Sentiment Analyses models.
+* ***sentiment***: this package contains the implementation of ```SentimentModel``` and ```ReviewSentimentModel```, two slightly different Sentiment Analyses models.
 * ***benchmarks.ipynb***: notebook to run benchmarks
 * ***controller\.py***: file serves as the central hub for interacting with and orchestrating the functionalities of various other files within this software project. 
 * ***index\.py***: this file builds Whoosh's own *schema* and then generates the *index*, which is stored in the *indexdir* directory.
@@ -73,26 +73,26 @@ The documents are retrieved based on the options selected by these filters:<
  
 
 ### RAW_recipes.csv
-- **id**: The unique identifier for the recipe.
-- **name**: The recipe name.
-- **minutes**: The estimated time to make the recipe expressed in minutes.
-- **contributor_id**: The id of the user that inserted the recipe in the dataset (_unused_).
-- **submitted**: The date on which the recipe has been inserted in the dataset.
-- **tags**: The tags for the indexing (_unused_).
-- **nutrition**: The recipe's nutritional values (_unused_).
-- **n_steps**: The number of steps to follow to complete the recipe.
-- **steps**: The steps to follow to complete the recipe.
-- **description**: The description of the recipe.
-- **ingredients**: The list of ingredients to buy.
-- **n_ingredients**: The number of ingredients.
+- **id**: the unique identifier for the recipe.
+- **name**: the recipe name.
+- **minutes**: the estimated time to make the recipe expressed in minutes.
+- **contributor_id**: the id of the user that inserted the recipe in the dataset (_unused_).
+- **submitted**: the date on which the recipe has been inserted in the dataset.
+- **tags**: the tags for the indexing (_unused_).
+- **nutrition**: the recipe's nutritional values (_unused_).
+- **n_steps**: the number of steps to follow to complete the recipe.
+- **steps**: the steps to follow to complete the recipe.
+- **description**: the description of the recipe.
+- **ingredients**: the list of ingredients to buy.
+- **n_ingredients**: the number of ingredients.
 
  
 ### RAW_interactions.csv
-- **user_id**: The id of the user which has written the review (_unused_).
-- **recipe_id**: The id of the recipe on which the review was written.
-- **date**: The date on which the review was written.
-- **rating**: The rating associated with the recipe.
-- **review**: The text of the review.
+- **user_id**: the id of the user which has written the review (_unused_).
+- **recipe_id**: the id of the recipe on which the review was written.
+- **date**: the date on which the review was written.
+- **rating**: the rating associated with the recipe.
+- **review**: the text of the review.
 
 ## Benchmarking
 The benchmarking suite is located in `SearchEngine/benchmark`.  
